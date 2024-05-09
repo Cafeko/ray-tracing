@@ -1,4 +1,5 @@
 from operations import Vector
+from ray import Ray
 
 class Camera:
     def __init__(self, position, target, screen_distance : float,
@@ -24,13 +25,12 @@ class Camera:
         # Vectors:
         self.vec_target : Vector = self.get_target_vector().normalize()
         self.vec_up : Vector = self.set_vector_up(up_vector)
-        self.vec_u : Vector = self.vec_target.cross_product(self.vec_up)
-        self.vec_v : Vector = self.vec_target.cross_product(self.vec_v)
-        self.vec_w : Vector = -self.vec_target
+        self.vec_u : Vector = self.vec_target.cross_product(self.vec_up).normalize()
+        self.vec_v : Vector = self.vec_target.cross_product(self.vec_u).normalize()
+        self.vec_w : Vector = -self.vec_target.normalize()
         # Ray
-        self.ray : Vector = Vector()
+        self.ray : Ray = Ray(Vector(self.position[0], self.position[1], self.position[2]), Vector())
         self.current_pixel = [0,0]
-        self.put_ray_in_start_position()
 
     def get_target_vector(self):
         """
@@ -95,28 +95,36 @@ class Camera:
 
     def put_ray_in_start_position(self):
         """Faz o ray apontar para o centro do pixel que fica no topo esquerdo da tela (cordenada (0, 0))."""
-        # Torna a direção do ray em um vetor (0, 0, 0) e as cordenadas do pixel atual em (0, 0).
-        self.ray = Vector()
+        # Muda a direção do ray para um vetor (0, 0, 0) e as cordenadas do pixel atual em (0, 0).
+        self.ray.set_direction(Vector())
         self.current_pixel = [0,0]
-        # Posiciona o ray no topo esquerdo da tela:
-        self.ray = self.vec_target * self.scr_dist # ray aponta para o centro da tela.
-        self.ray = self.ray + (self.vec_v * -(self.scr_h/2)) # ray aponta para o topo da tela.
-        self.ray = self.ray + (self.vec_u * -(self.scr_w/2)) # ray aponta para o topo esquerdo da tela.
+        # Faz a direção do ray apontar para o topo esquerdo da tela:
+        self.ray.change_direction((self.vec_target * self.scr_dist)) # ray aponta para o centro da tela.
+        self.ray.change_direction((self.vec_v * -(self.scr_h/2))) # ray aponta para o topo da tela.
+        self.ray.change_direction((self.vec_u * -(self.scr_w/2))) # ray aponta para o topo esquerdo da tela.
         # Posiciona o ray no centro do pixel:
         pixel_size = 1/self.scr_h
         # Faz o ray apontar para o centro do pixel (horizontalmente):
         if self.scr_h % 2 == 0:
-            self.ray = self.ray + (self.vec_u * (pixel_size/2))
+            self.ray.change_direction((self.vec_u * (pixel_size/2)))
         # Faz o ray apontar para o centro do pixel (verticalmente):
         if self.scr_w % 2 == 0:
-            self.ray = self.ray + (self.vec_v * (pixel_size/2))
+            self.ray.change_direction((self.vec_v * (pixel_size/2)))
     
-    def start_ray_cast():
+    def start_ray_cast(self):
         """
         
         Args:
         Returns:
         """
-        pass
+        self.put_ray_in_start_position()
+        start_direction : Vector = self.ray.get_direction()
 
-#c = Camera((0, 0, 0), ())
+
+c = Camera((0, 0, 0), (4, 3, 0.5), 1, 100, 200)
+c.start_ray_cast()
+#print(c.vec_u)
+#print(c.vec_v)
+#print(c.vec_w)
+#print(c.vec_target)
+#print(c.ray)

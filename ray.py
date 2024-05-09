@@ -56,3 +56,29 @@ class Ray(object):
         str: Representacao do Ray no formato 'Ray(origin, direction)'.
         """
         return f'Ray({repr(self.origin)}, {repr(self.direction)})'
+    
+    def set_direction(self, vector : Vector):
+        """
+        Determina o valor do vetor de direção como o valor do vetor recebido.
+        
+        Args:
+        vector (Vector): Novo vetor de direção.
+        """
+        self.direction = vector
+        pass
+
+    def get_direction(self):
+        """
+        Returns:
+        Vector: Vetor de direção do Ray.
+        """
+        return self.direction
+    
+    def change_direction(self, vector : Vector):
+        """
+        Muda a direção que o vetor de direção aponta, o movendo de acordo a sua soma com o vetor recebido.
+
+        Args:
+        vector (Vector): Netor que é somado ao vetor de direção. 
+        """
+        self.direction = self.direction + vector

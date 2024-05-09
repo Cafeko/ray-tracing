@@ -49,7 +49,10 @@ class Vector:
     def normalize(self):
         """ Retorna o vetor unitario. """
         magnitude = self.magnitude()
-        return Vector(self.x / magnitude, self.y / magnitude, self.z / magnitude)
+        if magnitude != 0:
+            return Vector(self.x / magnitude, self.y / magnitude, self.z / magnitude)
+        else:
+            return Vector()
 
     def dot_product(self, other):
         """ Retorna o produto escalar entre dois vetores. """
