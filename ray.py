@@ -13,7 +13,7 @@ class Ray(object):
         direction (Vector): O vetor direcao do raio.
         """
         self.origin = origin
-        self.direction = direction.norm()
+        self.direction = direction.normalize()
 
     def get_point_by_parameter(self, t):
         """
