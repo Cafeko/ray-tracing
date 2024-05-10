@@ -1,4 +1,4 @@
-from operations import *
+from vector import *
 
 class Ray(object):
     """
@@ -9,7 +9,7 @@ class Ray(object):
         Inicializa um Ray com uma origem e uma direcao normalizada.
         
         Args:
-        origin (Vector): O ponto de origem do raio.
+        origin (Point): O ponto de origem do raio.
         direction (Vector): O vetor direcao do raio.
         """
         self.origin = origin
@@ -82,3 +82,6 @@ class Ray(object):
         vector (Vector): Netor que é somado ao vetor de direção. 
         """
         self.direction = self.direction + vector
+
+    def get_origin(self):
+        return self.origin

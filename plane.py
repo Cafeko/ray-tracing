@@ -1,7 +1,8 @@
-from operations import Vector
+from vector import Vector
+from object import *
 import math
 
-class Plane:
+class Plane(Object):
     """
     Representa um plano geometrico definido por um ponto e uma normal.
 
@@ -41,13 +42,13 @@ class Plane:
             ray (Ray): O raio que pode ou nao intersectar o plano.
 
         Returns:
-            float or None: O escalar t na equacao parametrica do raio, ou None se nao houver intersecao.
+            Point: O ponto de intersecao.
         """
         op = ray.origin - self.point
-        a = Vector.dot(op, self.normal)
-        b = Vector.dot(ray.direction, self.normal)
+        a = op.dot_product(self.normal)
+        b = ray.direction.dot_product(self.normal)
         if b < 0:
-            return -a / b
+            return ray.get_point_by_parameter(-a / b)
         return None
 
     def surface_norm(self, point=None):
@@ -71,11 +72,11 @@ class Plane:
         """
         return self.material.reflects
     
-    def get_base_color(self):
+    def get_color(self):
         """
         Retorna a cor base do material do plano.
 
         Returns:
             tuple: A cor base (R, G, B) do material.
         """
-        return self.material.get_base_color()
+        return self.material.color

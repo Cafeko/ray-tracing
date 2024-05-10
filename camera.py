@@ -1,8 +1,11 @@
-from operations import Vector
-from ray import Ray
+from vector import *
+from point import *
+from ray import *
+from plane import *
+from mesh import *
 
 class Camera:
-    def __init__(self, position, target, screen_distance : float,
+    def __init__(self, position : Point, target : Point, screen_distance : float,
                  screen_heigth : int, screen_width  : int, up_vector : Vector =Vector(0,0,1)):
         """
         Inicializa a câmera, a posicionando e definindo seus valores.
@@ -16,8 +19,8 @@ class Camera:
         up_vector (Vector): vetor que aponta para cima.
         """
         # Posições:
-        self.position = position
-        self.target = target
+        self.position : Point = position
+        self.target : Point = target
         #Screen:
         self.scr_dist : float = screen_distance
         self.scr_h : int = self.set_screen_heigth(screen_heigth)
@@ -29,7 +32,7 @@ class Camera:
         self.vec_v : Vector = self.vec_target.cross_product(self.vec_u).normalize()
         self.vec_w : Vector = -self.vec_target.normalize()
         # Ray
-        self.ray : Ray = Ray(Vector(self.position[0], self.position[1], self.position[2]), Vector())
+        self.ray : Ray = Ray(self.position, Vector())
         self.current_pixel = [0,0]
 
     def get_target_vector(self):
@@ -39,8 +42,7 @@ class Camera:
         Returns:
         Vector: vetor formado pela diferença entre o ponto do target e o ponto da posição da câmera.
         """
-        result = (self.target[0] - self.position[0], self.target[1] - self.position[1], self.target[2] - self.position[2])
-        return Vector(result[0], result[1], result[2])
+        return self.target - self.position
 
     def set_screen_heigth(self, heigth : int):
         """
@@ -111,20 +113,113 @@ class Camera:
         if self.scr_w % 2 == 0:
             self.ray.change_direction((self.vec_v * (pixel_size/2)))
     
-    def start_ray_cast(self):
+    def start_ray_cast(self, objects : list):
         """
+        Começa a fazer o processo de raycast, fazendo o raio passar por todos os pixels da tela e verificar se está
+        atingindo algum objeto e dando a aquele pixel a cor do objeto atingido mais proximo.
         
         Args:
+        objects (list): Lista de objetos que podem (ou não) colidir com o raio.
+
         Returns:
+        matriz ([[(r, g, b)]]): Matriz com as cores dos pixels da tela.
         """
+        screen_matrix = []
         self.put_ray_in_start_position()
         start_direction : Vector = self.ray.get_direction()
+        for y in range(self.scr_h):
+            screen_matrix.append([])
+            for x in range(self.scr_w):
+                self.ray.set_direction((start_direction + (self.vec_u * x) + (self.vec_v * y)))
+                self.current_pixel = [x, y]
+                intercections = self.verify_intersections(objects)
+                closest = self.get_closest_object(self.position, intercections)
+                if closest != None:
+                    screen_matrix[y].append(closest.get_color())
+                else: 
+                    screen_matrix[y].append(None)
+        return screen_matrix
+
+    def verify_intersections(self, objects : list):
+        """
+        Verifica se o raio colide com os objetos de uma lista de objetos.
+
+        Args:
+        ray (Ray): Raio o qual a colisão será verificada.
+        objects (list): Lista de objetos que podem (ou não) colidir com o raio.
+
+        Returns:
+        dict: Dicionario que contem como chave os objetos que colidiram com o raio e como valores os pontos de colisão.
+        """
+        intersection_points = None
+        intersections_dict = {}
+        for obj in objects:
+            intersection_points = obj.intersects(self.ray)
+            if intersection_points != None:
+                intersections_dict[obj] = intersection_points
+        return intersections_dict
+    
+    @staticmethod
+    def get_closest_object(origin_point : Point, intercetion_dict : dict):
+        """
+        Determina quais dos pontos dos objetos está mais proximo do ponto de origem. 
+        
+        Args:
+        origin_point (Point): Ponto de origem do raio que passou pelos objetos.
+        intercetion_dict (dict): Dicionario que contem os objetos e os pontos que colidiram com o raio.
+
+        Returns:
+        Objeto que contem o ponto mais proximo do ponto de origem.
+        """
+        if len(intercetion_dict.keys()) > 0:
+            closest_obj = None
+            intercetion_point : Point = None
+            for k in intercetion_dict.keys():
+                if closest_obj == None:
+                    closest_obj = k
+                    if isinstance(intercetion_dict[k], list):
+                        intercetion_point = Camera.closest_in_list(origin_point, intercetion_dict[k])
+                    else:
+                        intercetion_point = intercetion_dict[k]
+                else:
+                    point = None
+                    if isinstance(intercetion_dict[k], list):
+                        point = Camera.closest_in_list(origin_point, intercetion_dict[k])
+                    else:
+                        point = intercetion_dict[k]
+                    if point != None:
+                        if origin_point.distance_to(intercetion_point) > origin_point.distance_to(point):
+                            closest_obj = k
+                            intercetion_point = point
+            return closest_obj
+        else:
+            None
+
+    @staticmethod
+    def closest_in_list(origin_point : Point, points_list : list):
+        """
+        Retorna o ponto da lista que está mais proximo do ponto de origem.
+        
+        Args:
+        origin_point (Point): Ponto de origem que terá sua posição comparada com a dos outros pontos.
+        points_list (list): Lista de pontos 
+        Returns:
+        """    
+        closest = None
+        closest_distance = None
+        for p in points_list:
+            if closest == None:
+                closest = p
+                closest_distance = origin_point.distance_to(p)
+            elif closest_distance > origin_point.distance_to(p):
+                closest = p
+                closest_distance = p
+        return closest
 
 
-c = Camera((0, 0, 0), (4, 3, 0.5), 1, 100, 200)
-c.start_ray_cast()
-#print(c.vec_u)
-#print(c.vec_v)
-#print(c.vec_w)
-#print(c.vec_target)
-#print(c.ray)
+c = Camera(Point(1, 0, 0), Point(0, 0, 0), 1, 100, 200)
+p = Plane(Point(0, 0, -2), Vector(0, 0, 1), Material((255, 0, 0)))
+p2 = Plane(Point(0.9, 0, 0), Vector(1, 0, 0), Material((0, 255, 0)))
+matrix = c.start_ray_cast([p, p2])
+import image
+image.generate_image(matrix, 200, 100, "Image")
