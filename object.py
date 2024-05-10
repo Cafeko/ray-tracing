@@ -17,4 +17,4 @@ class Object(abc.ABC):
     @abc.abstractmethod
     def get_color(self):
         """Retorna a cor do objeto."""
-        return self.color
+        pass

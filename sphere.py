@@ -9,39 +9,28 @@ class Sphere(Object):
         self.radius : float = radius
         self.color : tuple = color
 
-    def intersects(self, ray_origin : Vector, ray_direction : Vector):
-        oc = ray_origin - self.center
+    def intersects(self, ray : Ray):
+        ray_direction = ray.get_direction()
+        oc : Vector = ray.get_origin() - self.center
         a = ray_direction.dot_product(ray_direction)
         b = 2.0 * oc.dot_product(ray_direction)
         c = oc.dot_product(oc) - self.radius * self.radius
-        discriminant = b * b - 4 * a * c
-
-        if discriminant > 0:
+        delta = b * b - 4 * a * c
+        if delta >= 0:
             # Raio intersecta a esfera
-            return True
+            if delta > 0:
+                x1 = (-b + sqrt(delta))/(2 * a)
+                x2 = (-b - sqrt(delta))/(2 * a)
+                p1 = a*x1*x1 + b*x1 + c
+                p2 = a*x2*x2 + b*x2 + c
+                return [ray.get_point_by_parameter(p1), ray.get_point_by_parameter(p2)]
+            else:
+                x = (-b)/(2 * a)
+                p = a*x*x + b*x + c
+                return ray.get_point_by_parameter(p)
         else:
             # Raio não intersecta a esfera
-            return False
+            return None
     
     def get_color(self):
-        pass
-
-def ray_color(ray_origin, ray_direction, objects):
-    for obj in objects:
-        if obj.intersect(ray_origin, ray_direction):
-            # Se houver interseção, o ponto está na sombra
-            return Vector(0.0, 0.0, 0.0)  # Cor preta
-    # Se não houver interseção, o ponto está iluminado
-    unit_direction = ray_direction / ray_direction.magnitude()
-    t = 0.5 * (unit_direction.y + 1.0)
-    return (1.0 - t) * Vector(1.0, 1.0, 1.0) + t * Vector(0.5, 0.7, 1.0)
-
-# Exemplo de uso
-ray_origin = Vector(0, 0, 0)
-ray_direction = Vector(0, 0, -1)
-sphere1 = Sphere(Vector(0, 0, -3), 1, Vector(1, 0, 0))  # Esfera vermelha
-sphere2 = Sphere(Vector(0, -1001, -3), 1000, Vector(0, 0, 1))  # Chão azul
-
-objects = [sphere1, sphere2]
-
-print(ray_color(ray_origin, ray_direction, objects))  # Saída: [0.5 0.7 1. ]
+        return self.color

@@ -2,6 +2,7 @@ from vector import *
 from point import *
 from ray import *
 from plane import *
+from sphere import *
 from mesh import *
 
 class Camera:
@@ -217,9 +218,9 @@ class Camera:
         return closest
 
 
-c = Camera(Point(1, 0, 0), Point(0, 0, 0), 1, 100, 200)
-p = Plane(Point(0, 0, -2), Vector(0, 0, 1), Material((255, 0, 0)))
-p2 = Plane(Point(0.9, 0, 0), Vector(1, 0, 0), Material((0, 255, 0)))
-matrix = c.start_ray_cast([p, p2])
+c = Camera(Point(1, 0, 0), Point(-2000, 0, 0), 1, 200, 200)
+p = Plane(Point(0, 0, -2), Vector(0, 0, 1), Material((0, 255, 0)))
+s = Sphere(Point(-30, 0, 0), 30, (255, 0, 0))
+matrix = c.start_ray_cast([s])
 import image
-image.generate_image(matrix, 200, 100, "Image")
+image.generate_image(matrix, 200, 200, "Image")
