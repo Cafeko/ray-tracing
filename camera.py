@@ -1,9 +1,6 @@
 from vector import *
 from point import *
 from ray import *
-from plane import *
-from sphere import *
-from mesh import *
 
 class Camera:
     def __init__(self, position : Point, target : Point, screen_distance : float,
@@ -216,11 +213,3 @@ class Camera:
                 closest = p
                 closest_distance = p
         return closest
-
-
-c = Camera(Point(1, 0, 0), Point(-2000, 0, 0), 1, 200, 200)
-p = Plane(Point(0, 0, -2), Vector(0, 0, 1), Material((0, 255, 0)))
-s = Sphere(Point(-30, 0, 0), 30, (255, 0, 0))
-matrix = c.start_ray_cast([s])
-import image
-image.generate_image(matrix, 200, 200, "Image")
