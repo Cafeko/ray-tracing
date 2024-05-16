@@ -5,7 +5,7 @@ from sphere import *
 from mesh import *
 
 # Camera:
-c = Camera(Point(1, 0, 0), Point(-20, 0, 0), 20, 200, 200)
+c = Camera(position=Point(1, 0, 0), target=Point(-20, 0, 100), screen_distance=20, screen_heigth=200, screen_width=200)
 
 # Objetos:
 p = Plane(Point(0, 0, -1), Vector(0, 0, 1), Material((0, 255, 0)))

@@ -19,15 +19,25 @@ class Sphere(Object):
         if delta >= 0:
             # Raio intersecta a esfera
             if delta > 0:
-                x1 = (-b + sqrt(delta))/(2 * a)
-                x2 = (-b - sqrt(delta))/(2 * a)
-                p1 = a*x1*x1 + b*x1 + c
-                p2 = a*x2*x2 + b*x2 + c
-                return [ray.get_point_by_parameter(p1), ray.get_point_by_parameter(p2)]
+                t1 = (-b + sqrt(delta))/(2 * a)
+                t2 = (-b - sqrt(delta))/(2 * a)
+                points = []
+                if t1 > 0:
+                    points.append(ray.get_point_by_parameter(t1))
+                if t2 > 0:
+                    points.append(ray.get_point_by_parameter(t2))
+                if len(points) > 1:
+                    return points
+                elif len(points) == 1:
+                    return points[0]
+                else:
+                    return None
             else:
-                x = (-b)/(2 * a)
-                p = a*x*x + b*x + c
-                return ray.get_point_by_parameter(p)
+                t = (-b)/(2 * a)
+                if t > 0:
+                    return ray.get_point_by_parameter(t)
+                else:
+                    return None
         else:
             # Raio não intersecta a esfera
             return None
