@@ -1,6 +1,7 @@
 from PIL import Image
 
-def generate_image(color_matrix : list, width : int, heigth : int, image_path: str):
+def generate_image(color_matrix : list, width : int, heigth : int,
+                   image_path: str, background_color : tuple = (255, 255, 255)):
     if not ".ppm" in image_path:
         image_path = image_path + ".ppm"
     image_file = open(image_path, "w")
@@ -9,9 +10,9 @@ def generate_image(color_matrix : list, width : int, heigth : int, image_path: s
     image_file.write("255\n")
     for y in range(heigth):
         for x in range(width):
-            r = 255
-            g = 255
-            b = 255
+            r = background_color[0]
+            g = background_color[1]
+            b = background_color[2]
             if color_matrix[y] != [] and color_matrix[y][x] != None:
                 r = color_matrix[y][x][0]
                 g = color_matrix[y][x][1]

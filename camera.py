@@ -149,11 +149,11 @@ class Camera:
         Returns:
         dict: Dicionario que contem como chave os objetos que colidiram com o raio e como valores os pontos de colisão.
         """
-        intersection_points = None
+        intersection_point = None
         intersections_dict = {}
         for obj in objects:
             intersection_point = obj.intersects(self.ray)
-            if intersection_points != None:
+            if intersection_point != None:
                 intersections_dict[obj] = intersection_point
         return intersections_dict
     
