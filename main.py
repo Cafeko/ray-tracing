@@ -82,3 +82,8 @@ gerar_imagem_esquerda_e_acima()
 gerar_imagem_direita_e_acima()
 gerar_imagem_dois_circulos()
 gerar_imagem_planos()
+
+
+### Classe "Main"
+ ## - Propósito: contém o ponto de entrada do programa, gerenciando a inicialização e execução do pipeline de renderização.
+ ## - Funções Comuns: Configuração inicial, execução do loop principal do aplicativo.
