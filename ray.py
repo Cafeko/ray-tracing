@@ -85,3 +85,8 @@ class Ray(object):
 
     def get_origin(self):
         return self.origin
+
+
+### Classe "Ray"
+##  - Propósito: Representa um raio, comumente usado em algoritmos de ray tracing.
+##  - Funções Comuns: Definição de origem e direção do raio, cálculos de interseção com objetos.
