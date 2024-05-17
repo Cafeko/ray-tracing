@@ -47,7 +47,8 @@ class Plane(Object):
         op = ray.origin - self.point
         a = op.dot_product(self.normal)
         b = ray.direction.dot_product(self.normal)
-        if b < 0:
+        
+        if b < 0 or b > 0:
             t = -a / b
             if t > 0:
                 return ray.get_point_by_parameter(t)
