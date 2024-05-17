@@ -1,6 +1,7 @@
 from vector import *
 from point import *
 from ray import *
+from math import *
 
 class Camera:
     def __init__(self, position : Point, target : Point, screen_distance : float,
@@ -29,6 +30,8 @@ class Camera:
         self.vec_u : Vector = self.vec_target.cross_product(self.vec_up).normalize()
         self.vec_v : Vector = self.vec_target.cross_product(self.vec_u).normalize()
         self.vec_w : Vector = -self.vec_target.normalize()
+        self.vec_qx : Vector = self.scr_w/(self.scr_w - 1) * self.vec_u
+        self.vec_qy : Vector = self.scr_h/(self.scr_h - 1) * self.vec_v
         # Ray
         self.ray : Ray = Ray(self.position, Vector())
         self.current_pixel = [0,0]
@@ -99,7 +102,7 @@ class Camera:
         self.ray.set_direction(Vector())
         self.current_pixel = [0,0]
         # Faz a direção do ray apontar para o topo esquerdo da tela:
-        self.ray.change_direction((self.vec_target * self.scr_dist)) # ray aponta para o centro da tela.
+        self.ray.change_direction((self.vec_w.invert() * self.scr_dist)) # ray aponta para o centro da tela.
         self.ray.change_direction((self.vec_v * -(self.scr_h/2))) # ray aponta para o topo da tela.
         self.ray.change_direction((self.vec_u * -(self.scr_w/2))) # ray aponta para o topo esquerdo da tela.
         # Posiciona o ray no centro do pixel:
@@ -128,7 +131,7 @@ class Camera:
         for y in range(self.scr_h):
             screen_matrix.append([])
             for x in range(self.scr_w):
-                self.ray.set_direction((start_direction + (self.vec_u * x) + (self.vec_v * y)))
+                self.ray.set_direction((start_direction + (x * self.vec_qx) + (y * self.vec_qy)))
                 self.current_pixel = [x, y]
                 intercections = self.verify_intersections(objects)
                 closest = self.get_closest_object(self.position, intercections)

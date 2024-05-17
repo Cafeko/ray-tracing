@@ -21,6 +21,7 @@ class Plane(Object):
             normal (Vector): O vetor normal ao plano, que deve ser normalizado.
             material (Material): O material do plano.
         """
+        super().__init__()
         self.point = point
         self.normal = normal.normalize()
         self.material = material
@@ -50,7 +51,7 @@ class Plane(Object):
         
         if b < 0 or b > 0:
             t = -a / b
-            if t > 0:
+            if t > self.parameter_min:
                 return ray.get_point_by_parameter(t)
         return None
 
