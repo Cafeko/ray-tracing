@@ -100,3 +100,8 @@ class Vector:
         rs = ((refractive_index * cosi) - (self.AIR_REFRACTIVE_INDEX * cost)) / ((refractive_index * cosi) + (self.AIR_REFRACTIVE_INDEX * cost))
         rp = ((self.AIR_REFRACTIVE_INDEX * cosi) - (refractive_index * cost)) / ((self.AIR_REFRACTIVE_INDEX * cosi) + (refractive_index * cost))
         return (rs ** 2 + rp ** 2) / 2
+
+
+### Classe "Vector"
+##  - Propósito: Manipula vetores em 2D ou 3D.
+##  - Funções Comuns: Operações vetoriais (adição, subtração, produto escalar e vetorial), normalização.
