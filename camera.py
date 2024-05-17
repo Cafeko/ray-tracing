@@ -211,5 +211,5 @@ class Camera:
                 closest_distance = origin_point.distance_to(p)
             elif closest_distance > origin_point.distance_to(p):
                 closest = p
-                closest_distance = p
+                closest_distance = origin_point.distance_to(p)
         return closest

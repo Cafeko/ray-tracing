@@ -48,7 +48,9 @@ class Plane(Object):
         a = op.dot_product(self.normal)
         b = ray.direction.dot_product(self.normal)
         if b < 0:
-            return ray.get_point_by_parameter(-a / b)
+            t = -a / b
+            if t > 0:
+                return ray.get_point_by_parameter(t)
         return None
 
     def surface_norm(self, point=None):
