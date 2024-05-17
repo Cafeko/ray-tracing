@@ -1,8 +1,8 @@
 import abc
 
 class Object(abc.ABC):
-    def __init__():
-        pass
+    def __init__(self):
+        self.parameter_min = 0.0
     
     @abc.abstractmethod
     def intersects(self, ray):
