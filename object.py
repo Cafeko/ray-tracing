@@ -18,3 +18,7 @@ class Object(abc.ABC):
     def get_color(self):
         """Retorna a cor do objeto."""
         pass
+
+### Classe "Object"
+ ## - Propósito: Uma classe genérica para representar objetos 3D na cena, possivelmente incluindo propriedades comuns a todos os objetos.
+ ## - Funções Comuns: Armazenamento de atributos comuns a objetos 3D, como posição, rotação, escala.
