@@ -26,3 +26,8 @@ class Light:
             Vector: A posicao da fonte de luz.
         """
         return self.pos
+
+
+### Classe "PointLight"
+##  - Propósito: Representa uma fonte de luz pontual, emitindo luz em todas as direções a partir de um ponto específico.
+##  - Funções Comuns: Definição de intensidade e posição da luz, cálculos de iluminação.
