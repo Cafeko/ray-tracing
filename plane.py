@@ -84,3 +84,8 @@ class Plane(Object):
             tuple: A cor base (R, G, B) do material.
         """
         return self.material.color
+
+
+### Classe "Plane"
+##  - Propósito: Representa um plano infinito ou limitado em 3D.
+##  - Funções Comuns: Definição de plano por ponto e normal, cálculos de interseção com raios.
