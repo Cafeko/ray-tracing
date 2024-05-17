@@ -25,3 +25,8 @@ def generate_image(color_matrix : list, width : int, heigth : int,
 def ppm_to_jpg(image_path : str):
     image = Image.open(image_path)
     image.save(image_path[:-4] + ".jpg")
+
+
+### Classe "Image"
+##  - Propósito: Manipula a criação e manipulação de imagens, possivelmente gerando a saída final da renderização.
+ ## - Funções Comuns: Carregamento, salvamento e manipulação de imagens, armazenamento de dados de pixel.
