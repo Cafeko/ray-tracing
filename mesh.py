@@ -20,3 +20,8 @@ class Material:
         self.material_type = material_type 
         self.kr = kr  
         self.kt = kt  
+
+
+### Classe "Mesh"
+ ## - Propósito: Representa uma coleção de vértices, arestas e faces que define a forma de um objeto 3D.
+  ##- Funções Comuns: Manipulação e renderização de malhas, transformações geométricas.
