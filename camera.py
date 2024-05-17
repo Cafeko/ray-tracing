@@ -183,7 +183,7 @@ class Camera:
                     point = intercetion_dict[k]
                     if distance > origin_point.distance_to(point):
                         closest_obj = k
-                        distance = point
+                        distance = origin_point.distance_to(point)
             return closest_obj
         else:
             return None
