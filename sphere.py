@@ -38,3 +38,8 @@ class Sphere(Object):
     
     def get_color(self):
         return self.color
+
+
+##Classe "Sphere"
+ ## - Propósito: Representa uma esfera em 3D.
+ ## - Funções Comuns: Definição de centro e raio, cálculos de interseção com raios.
