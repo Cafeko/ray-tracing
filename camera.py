@@ -187,3 +187,9 @@ class Camera:
             return closest_obj
         else:
             return None
+
+
+### Classe "Camera"
+ ## - Propósito: Gerencia a perspectiva ou visão da cena 3D. Pode definir a posição, orientação e parâmetros de projeção da câmera.
+## - Funções Comuns: Ajuste de posição e direção da câmera, configuração de projeção (perspectiva ou ortográfica).
+
