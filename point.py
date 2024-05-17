@@ -53,3 +53,28 @@ class Point:
         u = 1.0 - v - w
         
         return u, v, w
+
+    def closest_point(self, points : list):
+        """
+        Recebe uma lista de pontos retornado o mais proximo.
+
+        Args:
+        points (list): Lista de pontos que serao avaliados.
+
+        Returns:
+        Point: Ponto mais proximo.
+        """
+        if len(points) > 0:
+            closest = None
+            closest_distance = None
+            for p in points:
+                if isinstance(p, Point):
+                    if closest == None:
+                        closest = p
+                        closest_distance = self.distance_to(p)
+                    else:
+                        distance = self.distance_to(p)
+                        if closest_distance > distance:
+                            closest = p
+                            closest_distance = distance
+        return closest

@@ -26,21 +26,14 @@ class Sphere(Object):
                     points.append(ray.get_point_by_parameter(t1))
                 if t2 > 0:
                     points.append(ray.get_point_by_parameter(t2))
-                if len(points) > 1:
-                    return points
-                elif len(points) == 1:
-                    return points[0]
-                else:
-                    return None
+                if len(points) > 0:
+                    return ray.get_origin().closest_point(points)
             else:
                 t = (-b)/(2 * a)
                 if t > 0:
                     return ray.get_point_by_parameter(t)
-                else:
-                    return None
-        else:
-            # Raio não intersecta a esfera
-            return None
+        # Raio não intersecta a esfera
+        return None
     
     def get_color(self):
         return self.color
