@@ -78,3 +78,8 @@ class Point:
                             closest = p
                             closest_distance = distance
         return closest
+
+
+### Classe "Point"
+##  - Propósito: Representa um ponto no espaço 3D.
+##  - Funções Comuns: Armazenamento de coordenadas, operações básicas de ponto.
