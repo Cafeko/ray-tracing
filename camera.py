@@ -1,5 +1,6 @@
 from vector import *
 from point import *
+from object import *
 from ray import *
 from math import *
 
@@ -125,6 +126,7 @@ class Camera:
         Returns:
         matriz ([[(r, g, b)]]): Matriz com as cores dos pixels da tela.
         """
+        objects = self.clean_objects_list(objects)
         screen_matrix = []
         self.put_ray_in_start_position()
         start_direction : Vector = self.ray.get_direction()
@@ -140,6 +142,15 @@ class Camera:
                 else: 
                     screen_matrix[y].append(None)
         return screen_matrix
+
+    @staticmethod
+    def clean_objects_list(objects_list : list):
+        clean_list = []
+        for o in objects_list:
+            if isinstance(o, Object):
+                clean_list.append(o)
+        return clean_list
+
 
     def verify_intersections(self, objects : list):
         """
