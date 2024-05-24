@@ -1,9 +1,12 @@
 from object import *
 from material import *
 from point import *
+from plane import *
+from ray import *
 
 class Mesh(Object):
-    def __init__(self, vertices : list, triples : list, n_triangles: int, n_vertices : int, color: tuple):
+    def __init__(self, vertices : list, triples : list, n_triangles: int, n_vertices : int,
+                 color: tuple, normals_triangles = None, normals_vertices = None):
         """
         Malha que é formada por um conjunto de triangulos que juntos formam um objeto 3D.
 
@@ -13,20 +16,30 @@ class Mesh(Object):
         n_triangles (int): Número de triangulos na malha.
         n_vertices (int): Número de vertices na malha.
         color: (tupla): tupla com a cor da malha (r, g, b).
+        normals_triangles ([Vector]): Lista de vetores normais dos triangulos.
+        normal_vertices ([Vector]): Lista de vetores normais dos vertices.
 
         Returns:
         Retorna a malha se for uma malha valida ou None se for uma malha invalida.
         """
         super().__init__()
-        self.vertices : list = self.set_vertices(vertices)
-        self.triples : list = self.set_triples(triples)
         self.n_triangles : int = n_triangles
         self.n_vertices : int = n_vertices
-        if len(self.n_vertices) >= 3 and len(self.n_triangles) > 0 and \
+        self.vertices : list = self.set_vertices(vertices)
+        self.triples : list = self.set_triples(triples)
+        if self.n_vertices >= 3 and self.n_triangles > 0 and \
             len(self.vertices) == self.n_vertices and len(self.triples) == self.n_triangles:
             self.color : tuple = color
-            self.normals_triangles : list = self.create_triangles_normals_list()
-            self.normals_vertices : list = self.create_vertices_normals_list()
+            self.normals_triangles : list
+            self.normals_vertices : list
+            if normals_triangles == None:
+                self.normals_triangles = self.create_triangles_normals_list()
+            else:
+                self.normals_triangles = normals_triangles
+            if normals_vertices == None:
+                self.normals_vertices = self.create_vertices_normals_list()
+            else:
+                self.normals_vertices = normals_vertices
         else:
             return None
 
@@ -83,8 +96,7 @@ class Mesh(Object):
         self.triples = clean_triples_list
         return triples_list
     
-    @staticmethod
-    def is_valid_triple(triple):
+    def is_valid_triple(self, triple):
         """
         Determina se a tripla é valida para a malha.
         
@@ -94,8 +106,8 @@ class Mesh(Object):
         Returns:
         Bool: retorna true se a tupla for valida e false se não for valida.
         """
-        return isinstance(triple, tuple) and len(triple) == 3 and Mesh.get_vertice(triple[0]) != None and\
-            Mesh.get_vertice(triple[1]) != None and Mesh.get_vertice(triple[2]) != None
+        return isinstance(triple, tuple) and len(triple) == 3 and self.get_vertice(triple[0]) != None and\
+            self.get_vertice(triple[1]) != None and self.get_vertice(triple[2]) != None
     
     def get_color(self):
         """
@@ -145,8 +157,35 @@ class Mesh(Object):
             vertices_normals[i] = vertices_normals[i].normalize()
         return vertices_normals
 
-    def intersects(self, ray):
+    def intersects(self, ray : Ray):
+        points_list = []
+        for i in range(self.n_triangles):
+            triangle = self.triples[i]
+            triangle_normal = self.normals_triangles[i]
+            triangle_plane = Plane(self.get_vertice(triangle[0]), triangle_normal, Material(0, 0, 0))
+            plane_collision_point = triangle_plane.intersects(ray)
+            if plane_collision_point != None:
+                if self.point_in_triangle(plane_collision_point, triangle):
+                    points_list.append(plane_collision_point)
+        if len(points_list) > 0:
+            return ray.get_origin().closest_point(points_list)
+        else:
+            return None
+
         pass
+
+    def point_in_triangle(self, point : Point, triangle : tuple):
+        vert1 = self.get_vertice(triangle[0])
+        vert2 = self.get_vertice(triangle[1])
+        vert3 = self.get_vertice(triangle[2])
+        bc_cord = Point.barycentric_coords(point, vert1, vert2, vert3)
+        u = bc_cord[0]
+        v = bc_cord[1]
+        w = bc_cord[2]
+        if u >= 0 and u <= 1 and v >= 0 and v <= 1 and w >= 0 and w <= 1:
+            return True
+        else:
+            return False
 
 ### Classe "Mesh"
  ## - Propósito: Representa uma coleção de vértices, arestas e faces que define a forma de um objeto 3D.

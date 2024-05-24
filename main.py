@@ -6,15 +6,18 @@ from mesh import *
 from material import *
 
 # Camera:
-width = 400
-heigth = 300
-c = Camera(position=Point(1, 0, 0), target=Point(-20, 0, 0), screen_distance=100, screen_heigth=heigth, screen_width=width)
+width = 600
+heigth = 450
+c = Camera(position=Point(50, 20, -5), target=Point(0, 0, 0), screen_distance=100, screen_heigth=heigth, screen_width=width)
 
 # Objetos:
 p = Plane(Point(0, 0, -10), Vector(0, 0, 1), Material((0, 255, 0)))
+vertices = [Point(0, 0, 50), Point(50, 0, 0), Point(0, 25, 0), Point(0, -25, 0)]
+triplas = [(0, 1, 2), (0, 3, 1), (0, 2, 3), (1, 2, 3)]
+m = Mesh(vertices, triplas, 4, 4, (255, 0, 0))
 
 # Matriz de cores:
-matrix = c.start_ray_cast([p])
+matrix = c.start_ray_cast([p, m])
 
 # Gerar imagem:
 generate_image(matrix, width, heigth, "Imagem")

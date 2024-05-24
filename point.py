@@ -59,7 +59,7 @@ class Point:
         w = (d00 * d21 - d01 * d20) / denom
         u = 1.0 - v - w
         
-        return u, v, w
+        return (u, v, w)
 
     def closest_point(self, points : list):
         """

@@ -12,7 +12,7 @@ class Plane(Object):
         material (Material): Material que define as propriedades de reflexao do plano.
     """
 
-    def __init__(self, point, normal, material):
+    def __init__(self, point, normal, material, one_side = True):
         """
         Inicializa uma instancia de Plane com um ponto, vetor normal e material.
 
@@ -20,11 +20,13 @@ class Plane(Object):
             point (Vector): Um ponto no plano.
             normal (Vector): O vetor normal ao plano, que deve ser normalizado.
             material (Material): O material do plano.
+            one_side (bool): determina se so vai detectar colisão de um lado o dos dois lados do plano.
         """
         super().__init__()
         self.point = point
         self.normal = normal.normalize()
         self.material = material
+        self.one_side = one_side
 
     def __repr__(self):
         """
@@ -48,11 +50,16 @@ class Plane(Object):
         op = ray.origin - self.point
         a = op.dot_product(self.normal)
         b = ray.direction.dot_product(self.normal)
-        
-        if b < 0 or b > 0:
-            t = -a / b
-            if t > self.parameter_min:
-                return ray.get_point_by_parameter(t)
+        if self.one_side:
+            if b < 0:
+                t = -a / b
+                if t > self.parameter_min:
+                    return ray.get_point_by_parameter(t)
+        else:
+            if b < 0 or b > 0:
+                t = -a / b
+                if t > self.parameter_min:
+                    return ray.get_point_by_parameter(t)
         return None
 
     def surface_norm(self, point=None):
