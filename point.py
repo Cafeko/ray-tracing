@@ -44,21 +44,30 @@ class Point:
     @staticmethod
     def barycentric_coords(p, p0, p1, p2):
         """ Calcula as coordenadas baricentricas de um ponto p em relacao ao triangulo formado por p0, p1, e p2. """
-        v0 = Vector(p1.x - p0.x, p1.y - p0.y, p1.z - p0.z)
-        v1 = Vector(p2.x - p0.x, p2.y - p0.y, p2.z - p0.z)
-        v2 = Vector(p.x - p0.x, p.y - p0.y, p.z - p0.z)
         
-        d00 = v0.dot_product(v0)
-        d01 = v0.dot_product(v1)
-        d11 = v1.dot_product(v1)
-        d20 = v2.dot_product(v0)
-        d21 = v2.dot_product(v1)
-        
+        #cria vetores que representam os lados do triangulo e a posicao relativa do ponto p em relacao ao vertice p0
+        v0 = Vector(p1.x - p0.x, p1.y - p0.y, p1.z - p0.z)  #vetor do ponto p0 ao ponto p1
+        v1 = Vector(p2.x - p0.x, p2.y - p0.y, p2.z - p0.z)  #vetor do ponto p0 ao ponto p2
+        v2 = Vector(p.x - p0.x, p.y - p0.y, p.z - p0.z)     #vetor do ponto p0 ao ponto p
+
+        #calcula os produtos escalares dos vetores, que ajudam a entender como os vetores estao orientados
+        d00 = v0.dot_product(v0)  #produto escalar de v0 com ele mesmo (magnitude ao quadrado de v0)
+        d01 = v0.dot_product(v1)  #produto escalar de v0 com v1
+        d11 = v1.dot_product(v1)  #produto escalar de v1 com ele mesmo (magnitude ao quadrado de v1)
+        d20 = v2.dot_product(v0)  #produto escalar de v2 com v0
+        d21 = v2.dot_product(v1)  #produto escalar de v2 com v1
+
+        #calcula o denominador da fórmula das coordenadas baricentricas
         denom = d00 * d11 - d01 * d01
-        v = (d11 * d20 - d01 * d21) / denom
-        w = (d00 * d21 - d01 * d20) / denom
-        u = 1.0 - v - w
         
+        #calcula as coordenadas baricentricas v e w
+        v = (d11 * d20 - d01 * d21) / denom  # Coordenada baricentrica para p1
+        w = (d00 * d21 - d01 * d20) / denom  # Coordenada baricentrica para p2
+        
+        #calcula a coordenada baricentrica u para p0
+        u = 1.0 - v - w  #a soma de u, v, e w deve ser 1
+
+        #retorna as coordenadas baricentricas como uma tupla (u, v, w)
         return (u, v, w)
 
     def closest_point(self, points : list):
