@@ -45,7 +45,7 @@ class Plane(Object):
             ray (Ray): O raio que pode ou nao intersectar o plano.
 
         Returns:
-            Point: O ponto de intersecao.
+        Dicionario com informações da colisão: parametro t e cor.
         """
         op = ray.origin - self.point
         a = op.dot_product(self.normal)
@@ -54,12 +54,12 @@ class Plane(Object):
             if b < 0:
                 t = -a / b
                 if t > self.parameter_min:
-                    return ray.get_point_by_parameter(t)
+                    return {"t" : t, "color" : self.get_color()}
         else:
             if b < 0 or b > 0:
                 t = -a / b
                 if t > self.parameter_min:
-                    return ray.get_point_by_parameter(t)
+                    return {"t" : t, "color" : self.get_color()}
         return None
 
     def surface_norm(self, point=None):

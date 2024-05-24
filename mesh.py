@@ -6,7 +6,7 @@ from ray import *
 
 class Mesh(Object):
     def __init__(self, vertices : list, triples : list, n_triangles: int, n_vertices : int,
-                 color: tuple, normals_triangles = None, normals_vertices = None):
+                 color: tuple, normals_triangles = None, normals_vertices = None, edges : bool = False):
         """
         Malha que é formada por um conjunto de triangulos que juntos formam um objeto 3D.
 
@@ -18,6 +18,7 @@ class Mesh(Object):
         color: (tupla): tupla com a cor da malha (r, g, b).
         normals_triangles ([Vector]): Lista de vetores normais dos triangulos.
         normal_vertices ([Vector]): Lista de vetores normais dos vertices.
+        edges (bool): Indica se a malha vai ter as bordas com cor diferente.
 
         Returns:
         Retorna a malha se for uma malha valida ou None se for uma malha invalida.
@@ -30,6 +31,7 @@ class Mesh(Object):
         if self.n_vertices >= 3 and self.n_triangles > 0 and \
             len(self.vertices) == self.n_vertices and len(self.triples) == self.n_triangles:
             self.color : tuple = color
+            self.edges : bool = edges
             self.normals_triangles : list
             self.normals_vertices : list
             if normals_triangles == None:
@@ -158,21 +160,40 @@ class Mesh(Object):
         return vertices_normals
 
     def intersects(self, ray : Ray):
-        points_list = []
+        """
+        Percorre todos os triangulos da malha e verifica se eles colidem com o raio,
+        retornando as informações do mais proximo.
+        Para cada triangulo, cria um plano que contem o triangulo e verifica se o raio colide
+        com esse plano, se sim verifica se o ponto de colisão está dentro da area do triangulo,
+        se estiver dentro da area do triangulo considerase que esse raio colidiu com esse triangulo
+        e compara para ver se esse triangulo é o mais proximo da camera. 
+
+        Args:
+        ray (Ray): O raio da camera que pode ou nao intersectar a malha.
+
+        Returns:
+        Dicionario com informações da colisão: parametro t, cor, vetor normal do triangulo que colidiu.
+        """
+        lower_t = float("inf")
+        lower_info = None
+        # Percorre triangulos:
         for i in range(self.n_triangles):
             triangle = self.triples[i]
             triangle_normal = self.normals_triangles[i]
+            # Cria plano que contem triangulo:
             triangle_plane = Plane(self.get_vertice(triangle[0]), triangle_normal, Material(0, 0, 0))
-            plane_collision_point = triangle_plane.intersects(ray)
-            if plane_collision_point != None:
-                if self.point_in_triangle(plane_collision_point, triangle):
-                    points_list.append(plane_collision_point)
-        if len(points_list) > 0:
-            return ray.get_origin().closest_point(points_list)
-        else:
-            return None
-
-        pass
+            # Verifica colisão com plano do triangulo:
+            plane_collision_info = triangle_plane.intersects(ray)
+            if plane_collision_info != None:
+                colision_point = ray.get_point_by_parameter(plane_collision_info["t"])
+                # Verifica se o ponto de colisão está dentro do triangulo:
+                if self.point_in_triangle(colision_point, triangle):
+                    # Verifica e atualiza o mais proximo:
+                    if lower_t > plane_collision_info["t"]:
+                        lower_t = plane_collision_info["t"]
+                        lower_info = {"t" : plane_collision_info["t"], "color" : self.get_color(),
+                                      "triangle_normal" : triangle_normal}
+        return lower_info
 
     def point_in_triangle(self, point : Point, triangle : tuple):
         vert1 = self.get_vertice(triangle[0])
