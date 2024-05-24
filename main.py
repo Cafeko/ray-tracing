@@ -12,7 +12,6 @@ c = Camera(position=Point(60, 20, 20), target=Point(0, 30, 0), screen_distance=1
 
 # Objetos:
 p = Plane(Point(0, 0, -10), Vector(0, 0, 1), Material((0, 255, 0)))
-#s = Sphere(Point(0, 0, 20), 20, (255, 0, 0))
 vertices = [Point(0, 0, 50), Point(40, 0, 0), Point(0, 25, 0), Point(0, -25, 0)]
 triplas = [(0, 1, 2), (0, 3, 1), (0, 2, 3), (1, 2, 3)]
 m = Mesh(vertices, triplas, 4, 4, (255, 0, 0), edges=True)

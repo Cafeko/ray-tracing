@@ -6,7 +6,7 @@ from ray import *
 
 class Mesh(Object):
     def __init__(self, vertices : list, triples : list, n_triangles: int, n_vertices : int,
-                 color: tuple, normals_triangles = None, normals_vertices = None, edges : bool = False):
+                 color: tuple, normals_triangles = None, normals_vertices = None):
         """
         Malha que é formada por um conjunto de triangulos que juntos formam um objeto 3D.
 
@@ -18,7 +18,6 @@ class Mesh(Object):
         color: (tupla): tupla com a cor da malha (r, g, b).
         normals_triangles ([Vector]): Lista de vetores normais dos triangulos.
         normal_vertices ([Vector]): Lista de vetores normais dos vertices.
-        edges (bool): Indica se a malha vai ter as bordas com cor diferente.
 
         Returns:
         Retorna a malha se for uma malha valida ou None se for uma malha invalida.
@@ -31,14 +30,13 @@ class Mesh(Object):
         if self.n_vertices >= 3 and self.n_triangles > 0 and \
             len(self.vertices) == self.n_vertices and len(self.triples) == self.n_triangles:
             self.color : tuple = color
-            self.edges : bool = edges
             self.normals_triangles : list
             self.normals_vertices : list
-            if normals_triangles == None:
+            if normals_triangles == None or len(normals_triangles) != self.n_triangles:
                 self.normals_triangles = self.create_triangles_normals_list()
             else:
                 self.normals_triangles = normals_triangles
-            if normals_vertices == None:
+            if normals_vertices == None or len(normals_vertices) != self.n_vertices:
                 self.normals_vertices = self.create_vertices_normals_list()
             else:
                 self.normals_vertices = normals_vertices
