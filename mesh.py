@@ -12,7 +12,7 @@ class Mesh(Object):
 
         Args:
         vertices ([Point]): Lista de pontos que representam os vertices dos triangulos.
-        triples ((int, int, int)): Triplas que contem 3 inteiros que são os indices dos vertices de um triangulo.
+        triples ([(int, int, int)]): Triplas que contem 3 inteiros que são os indices dos vertices de um triangulo.
         n_triangles (int): Número de triangulos na malha.
         n_vertices (int): Número de vertices na malha.
         color: (tupla): tupla com a cor da malha (r, g, b).
@@ -108,15 +108,6 @@ class Mesh(Object):
         """
         return isinstance(triple, tuple) and len(triple) == 3 and self.get_vertice(triple[0]) != None and\
             self.get_vertice(triple[1]) != None and self.get_vertice(triple[2]) != None
-    
-    def get_color(self):
-        """
-        Retorna a cor da malha.
-
-        Returns:
-        Retorna a tupla com 3 elementos (r, g, b) que está associada a cor da malha.
-        """
-        return self.color
 
     def create_triangles_normals_list(self):
         """
@@ -205,6 +196,34 @@ class Mesh(Object):
             return True
         else:
             return False
+    
+    def get_color(self):
+        """
+        Retorna a cor da malha.
+
+        Returns:
+        Retorna a tupla com 3 elementos (r, g, b) que está associada a cor da malha.
+        """
+        return self.color
+
+    def get_points(self):
+        return self.vertices
+    
+    def get_center(self):
+        total_point = Point()
+        for p in self.vertices:
+            total_point += p
+        center_x = total_point.x / self.n_vertices
+        center_y = total_point.y / self.n_vertices
+        center_z = total_point.z / self.n_vertices
+        center_point = Point(center_x, center_y, center_z) 
+        return center_point
+    
+    def transform(self, transformation_matrix : Matrix):
+        for i in range(self.n_vertices):
+            self.vertices[i] = transformation_matrix.dot_product(self.vertices[i])
+        self.normals_triangles = self.create_triangles_normals_list()
+        self.normals_vertices = self.create_vertices_normals_list()
 
 ### Classe "Mesh"
  ## - Propósito: Representa uma coleção de vértices, arestas e faces que define a forma de um objeto 3D.

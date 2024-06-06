@@ -91,6 +91,15 @@ class Plane(Object):
             tuple: A cor base (R, G, B) do material.
         """
         return self.material.color
+    
+    def get_points(self):
+        return [self.point]
+    
+    def get_center(self):
+        return self.point
+    
+    def transform(self, transformation_matrix : Matrix):
+        self.point = transformation_matrix.dot_product(self.point)
 
 
 ### Classe "Plane"
