@@ -12,7 +12,8 @@ print(f"{time.time() - start_time:^7.4f} -- Inicio")
 # Camera:
 width = 600
 heigth = 450
-c = Camera(position=Point(60, 0, 0), target=Point(0, 0, 0), screen_distance=100, screen_heigth=heigth, screen_width=width)
+c = Camera(position=Point(200, 0, 0), target=Point(0, 0, 0), screen_distance=20,
+           resolution_height=heigth, resolution_width=width)
 
 print(f"{time.time() - start_time:^7.4f} -- Camera criada")
 
@@ -38,10 +39,10 @@ print(f"{time.time() - start_time:^7.4f} -- Imagem 1 criada")
 # Transformações:
 s.move(Vector(0, -80, 0))
 p.move(Vector(0, 0, 0))
-m.move(Vector(-1000, 0, 0))
-m.scale(Vector(50, 50, 50))
+m.move(Vector(-2000, 0, 0))
+m.scale(Vector(100, 50, 50))
 m.rotate(90, 2)
-p.rotate(0, 0)
+p.rotate(10, 0)
 
 print(f"{time.time() - start_time:^7.4f} -- Transformações realizadas")
 
