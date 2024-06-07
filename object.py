@@ -1,6 +1,8 @@
 import abc
 from vector import Vector
+from point import Point
 from matrix import Matrix
+import math_stuff
 
 class Object(abc.ABC):
     def __init__(self):
@@ -22,21 +24,16 @@ class Object(abc.ABC):
         pass
     
     @abc.abstractmethod
-    def get_points(self):
-        pass
-    
-    @abc.abstractmethod
     def get_center(self):
         pass
     
     @abc.abstractmethod
-    def transform(self, transformation_matrix : Matrix):
+    def move(self, movement_vector : Vector):
         pass
-    
-    def move_object(self, movement_vector : Vector):
-        move_matrix = Matrix.create_move_matrix(movement_vector)
-        self.transform(move_matrix)
-    
+
+    @abc.abstractmethod
+    def rotate(self, degree : float, axis : int):
+        pass
 
 ### Classe "Object"
  ## - Propósito: Uma classe genérica para representar objetos 3D na cena, possivelmente incluindo propriedades comuns a todos os objetos.

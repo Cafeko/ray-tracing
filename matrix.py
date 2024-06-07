@@ -1,5 +1,7 @@
 from vector import Vector
 from point import Point
+import math_stuff
+import numpy as np
 
 class Matrix:
     def __init__(self, matrix_values : list):
@@ -20,7 +22,18 @@ class Matrix:
         return values_string
     
     def set_value(self, line : int, column : int, value : float):
-        self.values[line][column] = value
+        self.values[line-1][column-1] = value
+
+    def copy_values(self):
+        copy = []
+        for l in range(self.n_linhas):
+            copy.append([])
+            for c in range(self.n_colunas):
+                copy[l].append(self.values[l][c])
+        return copy
+
+    def inverse(self):
+        return Matrix(np.linalg.inv(self.values))
 
     def dot_product(self, other):
         if isinstance(other, (Vector)):
@@ -85,11 +98,30 @@ class Matrix:
              [0, 0, 0, 1               ]]
         return Matrix(m)
 
+    @staticmethod
+    def create_rotation_matrix(degree : float, axis : int = 0):
+        if axis == 0 or axis == 1 or axis == 2:
+            angle = math_stuff.degree_to_rad(degree)
+            if axis == 0:
+                m = [[1, 0            ,  0            , 0],
+                     [0, np.cos(angle), -np.sin(angle), 0],
+                     [0, np.sin(angle),  np.cos(angle), 0],
+                     [0, 0            ,  0            , 1]]
+            elif axis == 1:
+                m = [[ np.cos(angle), 0, np.sin(angle), 0],
+                     [ 0            , 1, 0            , 0],
+                     [-np.sin(angle), 0, np.cos(angle), 0],
+                     [ 0            , 0, 0            , 1]]
+            elif axis == 2:
+                m = [[np.cos(angle), -np.sin(angle), 0, 0],
+                     [np.sin(angle),  np.cos(angle), 0, 0],
+                     [0            ,  0            , 1, 0],
+                     [0            ,  0            , 0, 1]]
+            return Matrix(m)
+        else:
+            return Matrix.create_defaut_matrix()
+
     """
-    @abc.abstractmethod
-    def create_rotation_matrix():
-        pass
-    
     @abc.abstractmethod
     def create_scale_matrix():
     pass
@@ -125,3 +157,13 @@ M2 = Matrix(m2)
 print(str(M1.dot_product(M2)))
 print(str(M2.dot_product(M1)))
 '''
+
+"""
+m = [[ 1,  0,  0,  3],
+     [ 0,  1,  0,  4],
+     [ 0,  0,  1, -5],
+     [ 0,  0,  0,  1]]
+
+M = Matrix(m)
+print(M.inverse().values)
+"""

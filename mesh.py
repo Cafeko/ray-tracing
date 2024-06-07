@@ -205,9 +205,6 @@ class Mesh(Object):
         Retorna a tupla com 3 elementos (r, g, b) que está associada a cor da malha.
         """
         return self.color
-
-    def get_points(self):
-        return self.vertices
     
     def get_center(self):
         total_point = Point()
@@ -219,11 +216,23 @@ class Mesh(Object):
         center_point = Point(center_x, center_y, center_z) 
         return center_point
     
-    def transform(self, transformation_matrix : Matrix):
+    def apply_transform(self, transformation_matrix : Matrix):
         for i in range(self.n_vertices):
             self.vertices[i] = transformation_matrix.dot_product(self.vertices[i])
         self.normals_triangles = self.create_triangles_normals_list()
         self.normals_vertices = self.create_vertices_normals_list()
+    
+    def move(self, movement_vector : Vector):
+        move_matrix = Matrix.create_move_matrix(movement_vector)
+        self.apply_transform(move_matrix)
+    
+    def rotate(self, degree : float, axis : int):
+        move_vector = Point() - self.get_center()
+        position_to_center = Matrix.create_move_matrix(move_vector)
+        rotation_matrix = Matrix.create_rotation_matrix(degree, axis)
+        center_to_position = position_to_center.inverse()
+        t = center_to_position.dot_product(rotation_matrix).dot_product(position_to_center)
+        self.apply_transform(t)
 
 ### Classe "Mesh"
  ## - Propósito: Representa uma coleção de vértices, arestas e faces que define a forma de um objeto 3D.

@@ -92,14 +92,17 @@ class Plane(Object):
         """
         return self.material.color
     
-    def get_points(self):
-        return [self.point]
-    
     def get_center(self):
         return self.point
+
+    def move(self, movement_vector : Vector):
+        move_matrix = Matrix.create_move_matrix(movement_vector)
+        self.point = move_matrix.dot_product(self.point)
     
-    def transform(self, transformation_matrix : Matrix):
-        self.point = transformation_matrix.dot_product(self.point)
+    def rotate(self, degree : float, axis : int):
+        rotation_matrix = Matrix.create_rotation_matrix(degree, axis)
+        self.normal = rotation_matrix.dot_product(self.normal)
+        self.normal.normalize()
 
 
 ### Classe "Plane"

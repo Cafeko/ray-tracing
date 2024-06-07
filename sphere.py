@@ -38,15 +38,16 @@ class Sphere(Object):
     
     def get_color(self):
         return self.color
-    
-    def get_points(self):
-        return [self.center]
 
     def get_center(self):
         return self.center
     
-    def transform(self, transformation_matrix : Matrix):
-        self.center = transformation_matrix.dot_product(self.center)
+    def move(self, movement_vector : Vector):
+        move_matrix = Matrix.create_move_matrix(movement_vector)
+        self.center = move_matrix.dot_product(self.center)
+    
+    def rotate(self, degree : float, axis : int):
+        pass
 
 
 ##Classe "Sphere"

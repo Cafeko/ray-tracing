@@ -12,7 +12,7 @@ print(f"{time.time() - start_time:^7.4f} -- Inicio")
 # Camera:
 width = 600
 heigth = 450
-c = Camera(position=Point(60, 0, 20), target=Point(0, 0, 0), screen_distance=100, screen_heigth=heigth, screen_width=width)
+c = Camera(position=Point(60, 0, 0), target=Point(0, 0, 0), screen_distance=100, screen_heigth=heigth, screen_width=width)
 
 print(f"{time.time() - start_time:^7.4f} -- Camera criada")
 
@@ -29,17 +29,20 @@ print(f"{time.time() - start_time:^7.4f} -- Objetos criados")
 
 
 # Gerar imagem:
-print(f"{time.time() - start_time:^7.4f} -- Raycast iniciado")
-matrix = c.start_ray_cast(objects_list)
-print(f"{time.time() - start_time:^7.4f} -- Raycast finalizado")
-generate_image(matrix, width, heigth, "Imagem")
-print(f"{time.time() - start_time:^7.4f} -- Imagem 1 criada")
-
+#print(f"{time.time() - start_time:^7.4f} -- Raycast iniciado")
+#matrix = c.start_ray_cast(objects_list)
+#print(f"{time.time() - start_time:^7.4f} -- Raycast finalizado")
+#generate_image(matrix, width, heigth, "Imagem")
+#print(f"{time.time() - start_time:^7.4f} -- Imagem 1 criada")
 
 # Transformações:
-s.move_object(Vector(0, -80, 0))
-p.move_object(Vector(0, 0, 0))
-m.move_object(Vector(0, 0, 30))
+s.move(Vector(0, -80, 0))
+p.move(Vector(0, 0, 0))
+#m.move_object(Vector(0, 0, 30))
+m.rotate(90, 2)
+m.rotate(30, 0)
+m.rotate(180, 2)
+p.rotate(45, 0)
 
 print(f"{time.time() - start_time:^7.4f} -- Transformações realizadas")
 
@@ -51,6 +54,7 @@ print(f"{time.time() - start_time:^7.4f} -- Raycast finalizado")
 generate_image(matrix, width, heigth, "Imagem2")
 print(f"{time.time() - start_time:^7.4f} -- Imagem 2 criada")
 print(f"{time.time() - start_time:^7.4f} -- Fim")
+
 
 
 ### Classe "Main"
