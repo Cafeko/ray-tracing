@@ -93,13 +93,16 @@ class Plane(Object):
         return self.material.color
     
     def get_center(self):
+        """Função que retorna o centro do plano."""
         return self.point
 
     def move(self, movement_vector : Vector):
+        """Função que movimenta o plano a partir de uma transformação de translação."""
         move_matrix = Matrix.create_move_matrix(movement_vector)
         self.point = move_matrix.dot_product(self.point)
     
     def rotate(self, degree : float, axis : int):
+        """Função que rotaciona o plano a partir de uma transformação de rotação."""
         rotation_matrix = Matrix.create_rotation_matrix(degree, axis)
         self.normal = rotation_matrix.dot_product(self.normal)
         self.normal.normalize()

@@ -11,6 +11,7 @@ class Sphere(Object):
         self.color : tuple = color
 
     def intersects(self, ray : Ray):
+        """Ferifica se há alguma intersecção entre o ray e a esfera."""
         ray_direction = ray.get_direction()
         oc : Vector = ray.get_origin() - self.center
         a = ray_direction.dot_product(ray_direction)
@@ -37,12 +38,15 @@ class Sphere(Object):
         return None
     
     def get_color(self):
+        """Retorna a cor da esfera."""
         return self.color
 
     def get_center(self):
+        """Retorna o centro da esfera."""
         return self.center
     
     def move(self, movement_vector : Vector):
+        """Função que movimenta a esfera a partir de uma transformação de translação."""
         move_matrix = Matrix.create_move_matrix(movement_vector)
         self.center = move_matrix.dot_product(self.center)
     

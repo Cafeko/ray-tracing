@@ -22,27 +22,26 @@ p = Plane(Point(0, 0, -10), Vector(0, 0, 1), Material((0, 255, 0)), False)
 vertices = [Point(0, 0, 50), Point(40, 0, 0), Point(0, 25, 0), Point(0, -25, 0)]
 triplas = [(0, 1, 2), (0, 3, 1), (0, 2, 3), (1, 3, 2)]
 m = Mesh(vertices, triplas, 4, 4, (255, 0, 0))
-s = Sphere(Point(0 , 40, 50), 20, (0, 0, 255))
+s = Sphere(Point(-40 , 40, 50), 35, (0, 0, 255))
 objects_list = [p, m, s]
 
 print(f"{time.time() - start_time:^7.4f} -- Objetos criados")
 
 
 # Gerar imagem:
-#print(f"{time.time() - start_time:^7.4f} -- Raycast iniciado")
-#matrix = c.start_ray_cast(objects_list)
-#print(f"{time.time() - start_time:^7.4f} -- Raycast finalizado")
-#generate_image(matrix, width, heigth, "Imagem")
-#print(f"{time.time() - start_time:^7.4f} -- Imagem 1 criada")
+print(f"{time.time() - start_time:^7.4f} -- Raycast iniciado")
+matrix = c.start_ray_cast(objects_list)
+print(f"{time.time() - start_time:^7.4f} -- Raycast finalizado")
+generate_image(matrix, width, heigth, "Imagem")
+print(f"{time.time() - start_time:^7.4f} -- Imagem 1 criada")
 
 # Transformações:
 s.move(Vector(0, -80, 0))
 p.move(Vector(0, 0, 0))
-m.move(Vector(0, 0, 30))
+m.move(Vector(-1000, 0, 0))
+m.scale(Vector(50, 50, 50))
 m.rotate(90, 2)
-m.rotate(30, 0)
-m.rotate(180, 2)
-p.rotate(45, 0)
+p.rotate(0, 0)
 
 print(f"{time.time() - start_time:^7.4f} -- Transformações realizadas")
 

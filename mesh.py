@@ -185,6 +185,7 @@ class Mesh(Object):
         return lower_info
 
     def point_in_triangle(self, point : Point, triangle : tuple):
+        """Indica se o ponto está ou não dentro do triangulo."""
         vert1 = self.get_vertice(triangle[0])
         vert2 = self.get_vertice(triangle[1])
         vert3 = self.get_vertice(triangle[2])
@@ -207,6 +208,7 @@ class Mesh(Object):
         return self.color
     
     def get_center(self):
+        """Retorna o centro da mesh, fazendo a soma de todos os seus pontos para tirar a media eles."""
         total_point = Point()
         for p in self.vertices:
             total_point += p
@@ -217,16 +219,21 @@ class Mesh(Object):
         return center_point
     
     def apply_transform(self, transformation_matrix : Matrix):
+        """
+        Função responsavel por aplicar a transformação para todos os pontos da mesh e atualizar os vetores normais.
+        """
         for i in range(self.n_vertices):
             self.vertices[i] = transformation_matrix.dot_product(self.vertices[i])
         self.normals_triangles = self.create_triangles_normals_list()
         self.normals_vertices = self.create_vertices_normals_list()
     
     def move(self, movement_vector : Vector):
+        """Função que movimenta a mesh a partir de uma transformação de translação."""
         move_matrix = Matrix.create_move_matrix(movement_vector)
         self.apply_transform(move_matrix)
     
     def rotate(self, degree : float, axis : int):
+        """Função que rotaciona a mesh a partir de uma transformação de rotação."""
         move_vector = Point() - self.get_center()
         position_to_center = Matrix.create_move_matrix(move_vector)
         rotation_matrix = Matrix.create_rotation_matrix(degree, axis)
@@ -234,7 +241,14 @@ class Mesh(Object):
         t = center_to_position.dot_product(rotation_matrix).dot_product(position_to_center)
         self.apply_transform(t)
     
-    def scale(self):
+    def scale(self, scale_vector : Vector):
+        """Função que muda a escala da mesh a partir de uma transformação de escala."""
+        move_vector = Point() - self.get_center()
+        position_to_center = Matrix.create_move_matrix(move_vector)
+        scale_matrix = Matrix.create_scale_matrix(scale_vector)
+        center_to_position = position_to_center.inverse()
+        t = center_to_position.dot_product(scale_matrix).dot_product(position_to_center)
+        self.apply_transform(t)
         pass
 
 ### Classe "Mesh"
