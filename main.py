@@ -31,11 +31,11 @@ print(f"{time.time() - start_time:^7.4f} -- Camera criada")
 
 
 # Cria objetos:
-p = Plane(Point(0, 0, -10), Vector(0, 0, 1), Material((0, 255, 0)), False)
+p = Plane(Point(0, 0, -20), Vector(0, 0, 1), Material((0, 255, 0)), False, False, 150)
 vertices = [Point(0, 0, 50), Point(40, 0, 0), Point(0, 25, 0), Point(0, -25, 0)]
 triplas = [(0, 1, 2), (0, 3, 1), (0, 2, 3), (1, 3, 2)]
 m = Mesh(vertices, triplas, 4, 4, (255, 0, 0))
-s = Sphere(Point(-40 , 40, 50), 35, (0, 0, 255))
+s = Sphere(Point(-40 , 20, 50), 20, (0, 0, 255))
 objects_list = [p, m, s]
 
 print(f"{time.time() - start_time:^7.4f} -- Objetos criados")
@@ -50,11 +50,13 @@ print(f"{time.time() - start_time:^7.4f} -- Imagem 1 criada")
 
 # Transformações:
 move_object(s, Vector(0, -80, 0))
+s.scale(2)
 move_object(p, Vector(0, 0, 0))
-move_object(m, Vector(-1000, 0, 0))
+rotate_object(p, 10, 0)
+p.scale(15)
+move_object(m, Vector(-2000, 0, 0))
 scale_object(m, Vector(50, 50, 50))
 rotate_object(m, 90, 2)
-rotate_object(p, 0, 0)
 
 print(f"{time.time() - start_time:^7.4f} -- Transformações realizadas")
 

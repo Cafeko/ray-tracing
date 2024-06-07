@@ -9,6 +9,7 @@ class Sphere(Object):
         self.center : Point = center
         self.radius : float = radius
         self.color : tuple = color
+        self.radius_scale : float = 1
 
     def intersects(self, ray : Ray):
         """Ferifica se há alguma intersecção entre o ray e a esfera."""
@@ -16,7 +17,7 @@ class Sphere(Object):
         oc : Vector = ray.get_origin() - self.center
         a = ray_direction.dot_product(ray_direction)
         b = 2.0 * oc.dot_product(ray_direction)
-        c = oc.dot_product(oc) - self.radius * self.radius
+        c = oc.dot_product(oc) - self.get_radius() * self.get_radius()
         delta = b * b - 4 * a * c
         if delta >= 0:
             # Raio intersecta a esfera
@@ -37,6 +38,9 @@ class Sphere(Object):
         # Raio não intersecta a esfera
         return None
     
+    def get_radius(self):
+        return self.radius * self.radius_scale
+
     def get_color(self):
         """Retorna a cor da esfera."""
         return self.color
@@ -53,8 +57,8 @@ class Sphere(Object):
     def rotate(self, degree : float, axis : int):
         pass
     
-    def scale(self):
-        pass
+    def scale(self, new_scale : float):
+        self.radius_scale = new_scale
 
 
 ##Classe "Sphere"
