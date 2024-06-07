@@ -10,6 +10,10 @@ def move_object(obj, vector):
     obj.move(vector)
     print(f"{time.time() - start_time:^7.4f} -- {obj.__class__.__name__} movido")
 
+def scale_object(obj, vector):
+    obj.scale(vector)
+    print(f"{time.time() - start_time:^7.4f} -- {obj.__class__.__name__} escalado")
+
 start_time = time.time()
 print(f"{time.time() - start_time:^7.4f} -- Inicio")
 
@@ -41,9 +45,9 @@ print(f"{time.time() - start_time:^7.4f} -- Imagem 1 criada")
 
 # Transformações:
 move_object(s, Vector(0, -80, 0))
-p.move(Vector(0, 0, 0))
-m.move(Vector(-1000, 0, 0))
-m.scale(Vector(50, 50, 50))
+move_object(p, Vector(0, 0, 0))
+move_object(m, Vector(-1000, 0, 0))
+scale_object(m, Vector(50, 50, 50))
 m.rotate(90, 2)
 p.rotate(0, 0)
 
