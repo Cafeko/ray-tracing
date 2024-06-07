@@ -48,6 +48,9 @@ class Sphere(Object):
     
     def rotate(self, degree : float, axis : int):
         pass
+    
+    def scale(self):
+        pass
 
 
 ##Classe "Sphere"

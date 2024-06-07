@@ -34,6 +34,10 @@ class Object(abc.ABC):
     @abc.abstractmethod
     def rotate(self, degree : float, axis : int):
         pass
+    
+    @abc.abstractmethod
+    def scale(self):
+        pass
 
 ### Classe "Object"
  ## - Propósito: Uma classe genérica para representar objetos 3D na cena, possivelmente incluindo propriedades comuns a todos os objetos.

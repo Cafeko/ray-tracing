@@ -233,6 +233,9 @@ class Mesh(Object):
         center_to_position = position_to_center.inverse()
         t = center_to_position.dot_product(rotation_matrix).dot_product(position_to_center)
         self.apply_transform(t)
+    
+    def scale(self):
+        pass
 
 ### Classe "Mesh"
  ## - Propósito: Representa uma coleção de vértices, arestas e faces que define a forma de um objeto 3D.

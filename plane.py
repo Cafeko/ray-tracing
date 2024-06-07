@@ -103,6 +103,9 @@ class Plane(Object):
         rotation_matrix = Matrix.create_rotation_matrix(degree, axis)
         self.normal = rotation_matrix.dot_product(self.normal)
         self.normal.normalize()
+    
+    def scale(self):
+        pass
 
 
 ### Classe "Plane"

@@ -1,7 +1,6 @@
 from vector import Vector
 from point import Point
-import math_stuff
-import numpy as np
+import math_stuff as ms
 
 class Matrix:
     def __init__(self, matrix_values : list):
@@ -33,7 +32,51 @@ class Matrix:
         return copy
 
     def inverse(self):
-        return Matrix(np.linalg.inv(self.values))
+        """ Utilisa eliminação de Gauss-Jordan para calcular a inversa da matriz e retornar o resultado. """
+        if self.n_linhas == self.n_colunas:
+            # Cria copia para não substituir os valores originais.
+            n = self.n_colunas
+            matriz = self.copy_values()
+
+            # Concatena a matriz com a matriz identidade.
+            matriz_identidade = self.create_identity_matrix(n).copy_values()
+            matriz_concat = []
+            for i in range(n):
+                matriz_concat.append(matriz[i] + matriz_identidade[i])
+            
+            # Repete os passos a seguir para todas as colunas da matriz. 
+            for coluna in range(n):
+                # Encontra o indice da linha do maior valor da coluna atual.
+                maior_index = 0
+                maior = 0
+                for i in range(coluna, n):
+                    valor = matriz_concat[i][coluna]
+                    if maior < abs(valor):
+                        maior = valor
+                        maior_index = i
+                # Troca de lugar a linha com o mesmo indice da coluna atual e a linha com o maior valor da coluna.
+                matriz_concat[coluna], matriz_concat[maior_index] = matriz_concat[maior_index], matriz_concat[coluna]
+
+                # Transforma linha para que elemento da diagonal vire um.
+                escalar = matriz_concat[coluna][coluna]
+                matriz_concat[coluna] = [elemento / escalar for elemento in matriz_concat[coluna]]
+
+                # Para todas as linhas diferentes da coluna atual, vai tornar os elementos da coluna que não estão na diagonal
+                # principal iguais a 0, faz isso multiplicando os valores da linha que tem o mesmo indice da coluna atual 
+                # pelos valores dos elementos das outras linhas, que estão na mesma coluna, e depois subtraindo nessas linhas.
+                for linha in range(n):
+                    if linha != coluna:
+                        escalar = matriz_concat[linha][coluna]
+                        matriz_concat[linha] = [elemento - (escalar * matriz_concat[coluna][i])
+                                                for i, elemento in enumerate(matriz_concat[linha])]
+            
+            # Retira a matriz invertida da matriz concatenada.
+            matriz_invertida = []
+            for i in range(n):
+                matriz_invertida.append(matriz_concat[i][n:])
+            return Matrix(matriz_invertida)
+        else:
+            return None
 
     def dot_product(self, other):
         if isinstance(other, (Vector)):
@@ -83,6 +126,18 @@ class Matrix:
         return to_type(matrix.values[0][0], matrix.values[1][0], matrix.values[2][0])
 
     @staticmethod
+    def create_identity_matrix(size):
+        ident = []
+        for i in range(size):
+            ident.append([])
+            for j in range(size):
+                if i == j:
+                    ident[i].append(1)
+                else:
+                    ident[i].append(0)
+        return Matrix(ident)
+
+    @staticmethod
     def create_defaut_matrix():
         m = [[1, 0, 0, 0],
              [0, 1, 0, 0],
@@ -101,20 +156,20 @@ class Matrix:
     @staticmethod
     def create_rotation_matrix(degree : float, axis : int = 0):
         if axis == 0 or axis == 1 or axis == 2:
-            angle = math_stuff.degree_to_rad(degree)
+            angle = ms.degree_to_rad(degree)
             if axis == 0:
                 m = [[1, 0            ,  0            , 0],
-                     [0, np.cos(angle), -np.sin(angle), 0],
-                     [0, np.sin(angle),  np.cos(angle), 0],
+                     [0, ms.cos(angle), -ms.sin(angle), 0],
+                     [0, ms.sin(angle),  ms.cos(angle), 0],
                      [0, 0            ,  0            , 1]]
             elif axis == 1:
-                m = [[ np.cos(angle), 0, np.sin(angle), 0],
+                m = [[ ms.cos(angle), 0, ms.sin(angle), 0],
                      [ 0            , 1, 0            , 0],
-                     [-np.sin(angle), 0, np.cos(angle), 0],
+                     [-ms.sin(angle), 0, ms.cos(angle), 0],
                      [ 0            , 0, 0            , 1]]
             elif axis == 2:
-                m = [[np.cos(angle), -np.sin(angle), 0, 0],
-                     [np.sin(angle),  np.cos(angle), 0, 0],
+                m = [[ms.cos(angle), -ms.sin(angle), 0, 0],
+                     [ms.sin(angle),  ms.cos(angle), 0, 0],
                      [0            ,  0            , 1, 0],
                      [0            ,  0            , 0, 1]]
             return Matrix(m)
@@ -159,11 +214,11 @@ print(str(M2.dot_product(M1)))
 '''
 
 """
-m = [[ 1,  0,  0,  3],
-     [ 0,  1,  0,  4],
-     [ 0,  0,  1, -5],
-     [ 0,  0,  0,  1]]
+m = [[24, 28, 34],
+     [47, 54, 65],
+     [78, 89, 107]]
 
 M = Matrix(m)
 print(M.inverse().values)
 """
+

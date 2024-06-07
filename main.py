@@ -38,7 +38,7 @@ print(f"{time.time() - start_time:^7.4f} -- Objetos criados")
 # Transformações:
 s.move(Vector(0, -80, 0))
 p.move(Vector(0, 0, 0))
-#m.move_object(Vector(0, 0, 30))
+m.move(Vector(0, 0, 30))
 m.rotate(90, 2)
 m.rotate(30, 0)
 m.rotate(180, 2)
