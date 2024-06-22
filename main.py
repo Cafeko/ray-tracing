@@ -5,6 +5,7 @@ from sphere import *
 from mesh import *
 from material import *
 from color import *
+from environment import *
 import time
 
 def move_object(obj, vector):
@@ -21,14 +22,6 @@ def rotate_object(obj, angle, axis):
 
 start_time = time.time()
 print(f"{time.time() - start_time:^7.4f} -- Inicio")
-
-# Camera:
-width = 600
-heigth = 450
-c = Camera(position=Point(100, 0, 0), target=Point(0, 0, 0), screen_distance=20,
-           resolution_height=heigth, resolution_width=width)
-
-print(f"{time.time() - start_time:^7.4f} -- Camera criada")
 
 
 # Cria objetos:
@@ -48,12 +41,28 @@ objects_list = [p, m, s]
 print(f"{time.time() - start_time:^7.4f} -- Objetos criados")
 
 
+# Ambiente:
+main_env = Environment(objects_list, Color(0, 0, 255))
+
+print(f"{time.time() - start_time:^7.4f} -- Ambiente criados")
+
+
+# Camera:
+width = 600
+heigth = 450
+c = Camera(position=Point(100, 0, 0), target=Point(0, 0, 0), screen_distance=20,
+           resolution_height=heigth, resolution_width=width)
+
+print(f"{time.time() - start_time:^7.4f} -- Camera criada")
+
+
 # Gerar imagem:
 print(f"{time.time() - start_time:^7.4f} -- Raycast iniciado")
-matrix = c.start_ray_cast(objects_list)
+matrix = c.start_ray_cast(main_env)
 print(f"{time.time() - start_time:^7.4f} -- Raycast finalizado")
 generate_image(matrix, width, heigth, "Imagem")
 print(f"{time.time() - start_time:^7.4f} -- Imagem 1 criada")
+
 
 # Transformações:
 move_object(s, Vector(0, -80, 0))
@@ -70,7 +79,7 @@ print(f"{time.time() - start_time:^7.4f} -- Transformações realizadas")
 
 # Gerar imagem (pós transformação):
 print(f"{time.time() - start_time:^7.4f} -- Raycast iniciado")
-matrix = c.start_ray_cast(objects_list)
+matrix = c.start_ray_cast(main_env)
 print(f"{time.time() - start_time:^7.4f} -- Raycast finalizado")
 generate_image(matrix, width, heigth, "Imagem2")
 print(f"{time.time() - start_time:^7.4f} -- Imagem 2 criada")

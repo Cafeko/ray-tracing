@@ -2,6 +2,7 @@ from vector import *
 from point import *
 from object import *
 from ray import *
+from environment import *
 from math import *
 
 class Camera:
@@ -118,7 +119,7 @@ class Camera:
         if self.res_h % 2 == 0:
             self.ray.change_direction((self.vec_v * (pixel_size_y/2)))
     
-    def start_ray_cast(self, objects : list):
+    def start_ray_cast(self, env : Environment):
         """
         Começa a fazer o processo de raycast, fazendo o raio passar por todos os pixels da tela e verificar se está
         atingindo algum objeto e dando a aquele pixel a cor do objeto atingido mais proximo.
@@ -129,7 +130,7 @@ class Camera:
         Returns:
         matriz ([[(r, g, b)]]): Matriz com as cores dos pixels da tela.
         """
-        objects = self.clean_objects_list(objects)
+        objects = env.get_objects()
         screen_matrix = []
         self.put_ray_in_start_position()
         start_direction : Vector = self.ray.get_direction()
@@ -141,7 +142,7 @@ class Camera:
                 intercections = self.verify_intersections(objects)
                 closest = self.get_closest_object(intercections)
                 if closest != None:
-                    pixel_color = intercections[closest]["color"].to_tuple()
+                    pixel_color = (intercections[closest]["color"] + env.get_color()).to_tuple()
                     screen_matrix[y].append(pixel_color)
                 else: 
                     screen_matrix[y].append(None)
