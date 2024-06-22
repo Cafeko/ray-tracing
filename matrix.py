@@ -237,4 +237,3 @@ class Matrix:
              [             0,              0, scale_vector.z, 0],
              [             0,              0,              0, 1]]
         return Matrix(m)
-    pass

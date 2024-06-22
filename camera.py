@@ -141,7 +141,8 @@ class Camera:
                 intercections = self.verify_intersections(objects)
                 closest = self.get_closest_object(intercections)
                 if closest != None:
-                    screen_matrix[y].append(intercections[closest]["color"])
+                    pixel_color = intercections[closest]["color"].to_tuple()
+                    screen_matrix[y].append(pixel_color)
                 else: 
                     screen_matrix[y].append(None)
         return screen_matrix

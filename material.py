@@ -1,9 +1,11 @@
+from color import *
+
 class Material:
     """
     Representa as propriedades fisicas de um material para renderizacao.
 
     Atributos:
-        color (tuple): Cor do material como uma tupla (R, G, B).
+        color (Color): Objeto da classe Color que contem as cores (R, G, B).
         specular (float): Coeficiente especular do material, que afeta o brilho especular.
         lambert (float): Coeficiente lambertiano do material, que afeta a difusao da luz.
         ambient (float): Coeficiente ambiental, que afeta a luminosidade ambiente percebida.
@@ -12,7 +14,7 @@ class Material:
         kt (float): Componente transmissiva do material, que afeta a transparencia.
     """
 
-    def __init__(self, color, specular=0.5, lambert=1, ambient=0.2, material_type="DIFFUSE", kr=1.5, kt=0.5):
+    def __init__(self, color: Color, specular=0.5, lambert=1, ambient=0.2, material_type="DIFFUSE", kr=1.5, kt=0.5):
         self.color = color
         self.specular = specular 
         self.lambert = lambert  

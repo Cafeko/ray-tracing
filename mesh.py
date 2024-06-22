@@ -6,7 +6,7 @@ from ray import *
 
 class Mesh(Object):
     def __init__(self, vertices : list, triples : list, n_triangles: int, n_vertices : int,
-                 color: tuple, normals_triangles = None, normals_vertices = None):
+                 material : Material, normals_triangles = None, normals_vertices = None):
         """
         Malha que é formada por um conjunto de triangulos que juntos formam um objeto 3D.
 
@@ -15,7 +15,7 @@ class Mesh(Object):
         triples ([(int, int, int)]): Triplas que contem 3 inteiros que são os indices dos vertices de um triangulo.
         n_triangles (int): Número de triangulos na malha.
         n_vertices (int): Número de vertices na malha.
-        color: (tupla): tupla com a cor da malha (r, g, b).
+        material (Material): Material do mesh.
         normals_triangles ([Vector]): Lista de vetores normais dos triangulos.
         normal_vertices ([Vector]): Lista de vetores normais dos vertices.
 
@@ -29,7 +29,7 @@ class Mesh(Object):
         self.triples : list = self.set_triples(triples)
         if self.n_vertices >= 3 and self.n_triangles > 0 and \
             len(self.vertices) == self.n_vertices and len(self.triples) == self.n_triangles:
-            self.color : tuple = color
+            self.material : Material = material
             self.normals_triangles : list
             self.normals_vertices : list
             if normals_triangles == None or len(normals_triangles) != self.n_triangles:
@@ -205,7 +205,7 @@ class Mesh(Object):
         Returns:
         Retorna a tupla com 3 elementos (r, g, b) que está associada a cor da malha.
         """
-        return self.color
+        return self.material.color
     
     def get_center(self):
         """Retorna o centro da mesh, fazendo a soma de todos os seus pontos para tirar a media eles."""
@@ -249,7 +249,6 @@ class Mesh(Object):
         center_to_position = position_to_center.inverse()
         t = center_to_position.dot_product(scale_matrix).dot_product(position_to_center)
         self.apply_transform(t)
-        pass
 
 ### Classe "Mesh"
  ## - Propósito: Representa uma coleção de vértices, arestas e faces que define a forma de um objeto 3D.

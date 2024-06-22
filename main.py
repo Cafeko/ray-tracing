@@ -4,6 +4,7 @@ from plane import *
 from sphere import *
 from mesh import *
 from material import *
+from color import *
 import time
 
 def move_object(obj, vector):
@@ -24,18 +25,24 @@ print(f"{time.time() - start_time:^7.4f} -- Inicio")
 # Camera:
 width = 600
 heigth = 450
-c = Camera(position=Point(200, 0, 0), target=Point(0, 0, 0), screen_distance=20,
+c = Camera(position=Point(100, 0, 0), target=Point(0, 0, 0), screen_distance=20,
            resolution_height=heigth, resolution_width=width)
 
 print(f"{time.time() - start_time:^7.4f} -- Camera criada")
 
 
 # Cria objetos:
-p = Plane(Point(0, 0, -20), Vector(0, 0, 1), Material((0, 255, 0)), False, False, 150)
+# Plano
+material_plano = Material(Color(0, 255, 0))
+p = Plane(Point(0, 0, -20), Vector(0, 0, 1), material_plano, False, False, 150)
+# Mesh
+material_mesh = Material(Color(255, 0, 0))
 vertices = [Point(0, 0, 50), Point(40, 0, 0), Point(0, 25, 0), Point(0, -25, 0)]
 triplas = [(0, 1, 2), (0, 3, 1), (0, 2, 3), (1, 3, 2)]
-m = Mesh(vertices, triplas, 4, 4, (255, 0, 0))
-s = Sphere(Point(-40 , 20, 50), 20, (0, 0, 255))
+m = Mesh(vertices, triplas, 4, 4, material_mesh)
+# Esfera
+material_esfera = Material(Color(0, 0, 255))
+s = Sphere(Point(-40 , 20, 50), 20, material_esfera)
 objects_list = [p, m, s]
 
 print(f"{time.time() - start_time:^7.4f} -- Objetos criados")

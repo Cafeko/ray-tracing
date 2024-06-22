@@ -1,5 +1,6 @@
 from vector import Vector
 from object import *
+from material import *
 import math
 
 class Plane(Object):
@@ -12,7 +13,7 @@ class Plane(Object):
         material (Material): Material que define as propriedades de reflexao do plano.
     """
 
-    def __init__(self, point, normal, material, one_side = True, inf : bool = True, distance : float = 100):
+    def __init__(self, point, normal, material : Material, one_side = True, inf : bool = True, distance : float = 100):
         """
         Inicializa uma instancia de Plane com um ponto, vetor normal e material.
 

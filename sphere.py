@@ -2,13 +2,14 @@ from ray import *
 from vector import *
 from point import *
 from object import *
+from material import *
 
 class Sphere(Object):
-    def __init__(self, center : Point, radius : float, color : tuple):
+    def __init__(self, center : Point, radius : float, material : Material):
         super().__init__()
         self.center : Point = center
         self.radius : float = radius
-        self.color : tuple = color
+        self.material : Material = material
         self.radius_scale : float = 1
 
     def intersects(self, ray : Ray):
@@ -43,7 +44,7 @@ class Sphere(Object):
 
     def get_color(self):
         """Retorna a cor da esfera."""
-        return self.color
+        return self.material.color
 
     def get_center(self):
         """Retorna o centro da esfera."""
