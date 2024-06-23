@@ -148,10 +148,12 @@ class Camera:
                 intercections = self.verify_intersections(env.get_objects())
                 closest = self.get_closest_object(intercections)
                 if closest != None:
-                    ambient_coef = intercections[closest]["material"].ambient
-                    object_color = intercections[closest]["material"].color
-                    pixel_color = phong_lighting(ambient_coef, env.get_color(), object_color).to_tuple()
-                    screen_matrix[y].append(pixel_color)
+                    intercection_point = self.ray.get_point_by_parameter(intercections[closest]["t"])
+                    obj_material = intercections[closest]["material"]
+                    surface_normal = intercections[closest]["normal"]
+                    pixel_color = phong_lighting(env.get_color(), env.get_lights(), obj_material, surface_normal, intercection_point)
+                    pixel_color_tuple = pixel_color.to_tuple()
+                    screen_matrix[y].append(pixel_color_tuple)
                 else: 
                     screen_matrix[y].append(None)
         return screen_matrix

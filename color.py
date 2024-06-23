@@ -27,19 +27,35 @@ class Color:
         return Color(result_red, result_green, result_blue)
 
     def __mul__(self, other):
-        """ Multiplica os valores (R, G, B) de uma cor por um numero. """
+        """ Multiplica os valores (R, G, B) de uma cor por um numero ou por outra cor. """
+        if isinstance(other, Color):
+            return self.mult_by_color(other)
+        else:
+            # Red
+            result_red   = round(self.r * other)
+            result_red = self.in_color_range(result_red)
+            # Green
+            result_green = round(self.g * other)
+            result_green =  self.in_color_range(result_green)
+            # Blue
+            result_blue  = round(self.b * other)
+            result_blue = self.in_color_range(result_blue)
+
+            return Color(result_red, result_green, result_blue)
+    
+    def mult_by_color(self, other_color):
         # Red
-        result_red   = round(self.r * other)
+        result_red   = self.r * other_color.r
         result_red = self.in_color_range(result_red)
         # Green
-        result_green = round(self.g * other)
+        result_green = self.g * other_color.g
         result_green =  self.in_color_range(result_green)
         # Blue
-        result_blue  = round(self.b * other)
+        result_blue  = self.b * other_color.b
         result_blue = self.in_color_range(result_blue)
 
         return Color(result_red, result_green, result_blue)
-    
+
     @staticmethod
     def in_color_range(value : int):
         """ Garante que o valor recebido está entre 0 e 255. """

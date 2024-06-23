@@ -9,18 +9,6 @@ from environment import *
 from light import *
 import time
 
-def move_object(obj, vector):
-    obj.move(vector)
-    print(f"{time.time() - start_time:^7.4f} -- {obj.__class__.__name__} movido")
-
-def scale_object(obj, vector):
-    obj.scale(vector)
-    print(f"{time.time() - start_time:^7.4f} -- {obj.__class__.__name__} escalado")
-
-def rotate_object(obj, angle, axis):
-    obj.rotate(angle, axis)
-    print(f"{time.time() - start_time:^7.4f} -- {obj.__class__.__name__} rotacionado")
-
 start_time = time.time()
 print(f"{time.time() - start_time:^7.4f} -- Inicio")
 
@@ -43,7 +31,7 @@ print(f"{time.time() - start_time:^7.4f} -- Objetos criados")
 
 
 # Luzes:
-light1 = Light(Color(255, 255, 0), Point(0, -40, 50))
+light1 = Light(Color(255, 255, 255), Point(0, -40, 50))
 lights_list = [light1]
 
 print(f"{time.time() - start_time:^7.4f} -- Luzes criadas")
@@ -71,26 +59,6 @@ print(f"{time.time() - start_time:^7.4f} -- Raycast finalizado")
 generate_image(matrix, width, heigth, "Imagem")
 print(f"{time.time() - start_time:^7.4f} -- Imagem 1 criada")
 
-
-# Transformações:
-move_object(s, Vector(0, -80, 0))
-s.scale(2)
-move_object(p, Vector(0, 0, 0))
-rotate_object(p, 10, 0)
-p.scale(15)
-move_object(m, Vector(-2000, 0, 0))
-scale_object(m, Vector(50, 50, 50))
-rotate_object(m, 90, 2)
-
-print(f"{time.time() - start_time:^7.4f} -- Transformações realizadas")
-
-
-# Gerar imagem (pós transformação):
-print(f"{time.time() - start_time:^7.4f} -- Raycast iniciado")
-matrix = c.start_ray_cast(main_env)
-print(f"{time.time() - start_time:^7.4f} -- Raycast finalizado")
-generate_image(matrix, width, heigth, "Imagem2")
-print(f"{time.time() - start_time:^7.4f} -- Imagem 2 criada")
 print(f"{time.time() - start_time:^7.4f} -- Fim")
 
 
