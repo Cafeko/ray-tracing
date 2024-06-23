@@ -180,7 +180,7 @@ class Mesh(Object):
                     # Verifica e atualiza o mais proximo:
                     if lower_t > plane_collision_info["t"]:
                         lower_t = plane_collision_info["t"]
-                        lower_info = {"t" : plane_collision_info["t"], "color" : self.get_color(),
+                        lower_info = {"t" : plane_collision_info["t"], "material" : self.get_material(),
                                       "triangle_normal" : triangle_normal}
         return lower_info
 
@@ -198,6 +198,10 @@ class Mesh(Object):
         else:
             return False
     
+    def get_material(self):
+        """ Retorna o material da malha. """
+        return self.material
+
     def get_color(self):
         """
         Retorna a cor da malha.

@@ -60,14 +60,14 @@ class Plane(Object):
                 if t > self.parameter_min:
                     col_point = ray.get_point_by_parameter(t)
                     if self.is_in_distance(col_point):
-                        return {"t" : t, "color" : self.get_color()}
+                        return {"t" : t, "material" : self.get_material()}
         else:
             if b < 0 or b > 0:
                 t = -a / b
                 if t > self.parameter_min:
                     col_point = ray.get_point_by_parameter(t)
                     if self.is_in_distance(col_point):
-                        return {"t" : t, "color" : self.get_color()}
+                        return {"t" : t, "material" : self.get_material()}
         return None
 
     def is_in_distance(self, p : Point):
@@ -97,6 +97,10 @@ class Plane(Object):
         """
         return self.material.reflects
     
+    def get_material(self):
+        """ Retorna o material do plano. """
+        return self.material
+
     def get_color(self):
         """
         Retorna a cor base do material do plano.

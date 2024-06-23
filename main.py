@@ -6,6 +6,7 @@ from mesh import *
 from material import *
 from color import *
 from environment import *
+from light import *
 import time
 
 def move_object(obj, vector):
@@ -41,8 +42,15 @@ objects_list = [p, m, s]
 print(f"{time.time() - start_time:^7.4f} -- Objetos criados")
 
 
+# Luzes:
+light1 = Light(Color(255, 255, 0), Point(0, -40, 50))
+lights_list = [light1]
+
+print(f"{time.time() - start_time:^7.4f} -- Luzes criadas")
+
+
 # Ambiente:
-main_env = Environment(objects_list, Color(0, 0, 255))
+main_env = Environment(objects_list, Color(0, 0, 255), lights_list)
 
 print(f"{time.time() - start_time:^7.4f} -- Ambiente criados")
 

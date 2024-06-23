@@ -29,13 +29,13 @@ class Color:
     def __mul__(self, other):
         """ Multiplica os valores (R, G, B) de uma cor por um numero. """
         # Red
-        result_red   = self.r * other
+        result_red   = round(self.r * other)
         result_red = self.in_color_range(result_red)
         # Green
-        result_green = self.g * other
+        result_green = round(self.g * other)
         result_green =  self.in_color_range(result_green)
         # Blue
-        result_blue  = self.b * other
+        result_blue  = round(self.b * other)
         result_blue = self.in_color_range(result_blue)
 
         return Color(result_red, result_green, result_blue)

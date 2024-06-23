@@ -31,17 +31,21 @@ class Sphere(Object):
                 if t2 > self.parameter_min:
                     times.append(t2)
                 if len(times) > 0:
-                    return {"t" : min(times), "color" : self.get_color()}
+                    return {"t" : min(times), "material" : self.get_material()}
             else:
                 t = (-b)/(2 * a)
                 if t > self.parameter_min:
-                    return {"t" : t, "color" : self.get_color()}
+                    return {"t" : t, "material" : self.get_material()}
         # Raio não intersecta a esfera
         return None
     
     def get_radius(self):
         return self.radius * self.radius_scale
 
+    def get_material(self):
+        """ Retorna o material da esfera. """
+        return self.material
+    
     def get_color(self):
         """Retorna a cor da esfera."""
         return self.material.color

@@ -3,6 +3,7 @@ from point import *
 from object import *
 from ray import *
 from environment import *
+from light import *
 from math import *
 
 class Camera:
@@ -40,6 +41,7 @@ class Camera:
         self.ray : Ray = Ray(self.position, Vector())
         self.current_pixel = [0,0]
 
+
     def get_target_vector(self):
         """
         Retorna o vetor que vai da posicão da câmera até a posição do target.
@@ -48,6 +50,7 @@ class Camera:
         Vector: vetor formado pela diferença entre o ponto do target e o ponto da posição da câmera.
         """
         return self.target - self.position
+
 
     def set_resolution_height(self, heigth : int):
         """
@@ -66,6 +69,7 @@ class Camera:
             self.res_h = heigth
         return self.res_h
     
+
     def set_resolution_width(self, width : int):
         """
         Define o valor da largura da tela.
@@ -83,6 +87,7 @@ class Camera:
             self.res_w = width
         return self.res_w
 
+
     def set_vector_up(self, vector : Vector):
         """
         Define o vector up da câmera, normalizando o vetor recebido como parametro.
@@ -99,6 +104,7 @@ class Camera:
         else:
             self.vec_up = Vector(0, 0, 1)
         return self.vec_up
+
 
     def put_ray_in_start_position(self):
         """Faz o ray apontar para o centro do pixel que fica no topo esquerdo da tela (cordenada (0, 0))."""
@@ -119,6 +125,7 @@ class Camera:
         if self.res_h % 2 == 0:
             self.ray.change_direction((self.vec_v * (pixel_size_y/2)))
     
+
     def start_ray_cast(self, env : Environment):
         """
         Começa a fazer o processo de raycast, fazendo o raio passar por todos os pixels da tela e verificar se está
@@ -130,7 +137,6 @@ class Camera:
         Returns:
         matriz ([[(r, g, b)]]): Matriz com as cores dos pixels da tela.
         """
-        objects = env.get_objects()
         screen_matrix = []
         self.put_ray_in_start_position()
         start_direction : Vector = self.ray.get_direction()
@@ -139,23 +145,17 @@ class Camera:
             for x in range(self.res_w):
                 self.ray.set_direction((start_direction + (x * self.vec_qx) + (y * self.vec_qy)))
                 self.current_pixel = [x, y]
-                intercections = self.verify_intersections(objects)
+                intercections = self.verify_intersections(env.get_objects())
                 closest = self.get_closest_object(intercections)
                 if closest != None:
-                    pixel_color = (intercections[closest]["color"] + env.get_color()).to_tuple()
+                    ambient_coef = intercections[closest]["material"].ambient
+                    object_color = intercections[closest]["material"].color
+                    pixel_color = phong_lighting(ambient_coef, env.get_color(), object_color).to_tuple()
                     screen_matrix[y].append(pixel_color)
                 else: 
                     screen_matrix[y].append(None)
         return screen_matrix
-
-    @staticmethod
-    def clean_objects_list(objects_list : list):
-        clean_list = []
-        for o in objects_list:
-            if isinstance(o, Object):
-                clean_list.append(o)
-        return clean_list
-
+    
 
     def verify_intersections(self, objects : list):
         """
@@ -176,6 +176,7 @@ class Camera:
                 intersections_dict[obj] = intersection_info
         return intersections_dict
     
+
     @staticmethod
     def get_closest_object(intercetion_dict : dict):
         """
