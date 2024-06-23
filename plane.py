@@ -60,14 +60,14 @@ class Plane(Object):
                 if t > self.parameter_min:
                     col_point = ray.get_point_by_parameter(t)
                     if self.is_in_distance(col_point):
-                        return {"t" : t, "material" : self.get_material()}
+                        return {"t" : t, "material" : self.get_material(), "normal" : self.normal}
         else:
             if b < 0 or b > 0:
                 t = -a / b
                 if t > self.parameter_min:
                     col_point = ray.get_point_by_parameter(t)
                     if self.is_in_distance(col_point):
-                        return {"t" : t, "material" : self.get_material()}
+                        return {"t" : t, "material" : self.get_material(), "normal" : self.normal}
         return None
 
     def is_in_distance(self, p : Point):

@@ -25,20 +25,25 @@ class Sphere(Object):
             if delta > 0:
                 t1 = (-b + sqrt(delta))/(2 * a)
                 t2 = (-b - sqrt(delta))/(2 * a)
-                times = []
+                ts = []
                 if t1 > self.parameter_min:
-                    times.append(t1)
+                    ts.append(t1)
                 if t2 > self.parameter_min:
-                    times.append(t2)
-                if len(times) > 0:
-                    return {"t" : min(times), "material" : self.get_material()}
+                    ts.append(t2)
+                if len(ts) > 0:
+                    return {"t" : min(ts), "material" : self.get_material(),  "normal" : self.collision_normal(min(ts), ray)}
             else:
                 t = (-b)/(2 * a)
                 if t > self.parameter_min:
-                    return {"t" : t, "material" : self.get_material()}
+                    return {"t" : t, "material" : self.get_material(), "normal" : self.collision_normal(t, ray)}
         # Raio não intersecta a esfera
         return None
     
+    def collision_normal(self, t, ray):
+        point = ray.get_point_by_parameter(t)
+        normal = (point - self.center).normalize()
+        return normal
+
     def get_radius(self):
         return self.radius * self.radius_scale
 

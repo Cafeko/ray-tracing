@@ -180,8 +180,7 @@ class Mesh(Object):
                     # Verifica e atualiza o mais proximo:
                     if lower_t > plane_collision_info["t"]:
                         lower_t = plane_collision_info["t"]
-                        lower_info = {"t" : plane_collision_info["t"], "material" : self.get_material(),
-                                      "triangle_normal" : triangle_normal}
+                        lower_info = {"t" : plane_collision_info["t"], "material" : self.get_material(), "normal" : triangle_normal}
         return lower_info
 
     def point_in_triangle(self, point : Point, triangle : tuple):
