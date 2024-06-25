@@ -16,44 +16,33 @@ class Color:
         """ Soma os valores (R, G, B) de uma cor com outra e retorna o resultado. """
         # Red
         result_red   = self.r + other.r
-        result_red = self.in_color_range(result_red)
         # Green
         result_green = self.g + other.g
-        result_green =  self.in_color_range(result_green)
         # Blue
         result_blue  = self.b + other.b
-        result_blue = self.in_color_range(result_blue)
-
         return Color(result_red, result_green, result_blue)
 
     def __mul__(self, other):
-        """ Multiplica os valores (R, G, B) de uma cor por um numero ou por outra cor. """
-        if isinstance(other, Color):
-            return self.mult_by_color(other)
+        """ Multiplica os valores (R, G, B) de uma cor por um numero ou por uma tupla com 3 valores. """
+        if isinstance(other, tuple):
+            return self.mult_by_tuple(other)
         else:
             # Red
             result_red   = round(self.r * other)
-            result_red = self.in_color_range(result_red)
             # Green
             result_green = round(self.g * other)
-            result_green =  self.in_color_range(result_green)
             # Blue
             result_blue  = round(self.b * other)
-            result_blue = self.in_color_range(result_blue)
-
             return Color(result_red, result_green, result_blue)
     
-    def mult_by_color(self, other_color):
+    def mult_by_tuple(self, other):
+        """ Faz a multiplicação por 3 valores em uma tupla, um para cada um das cores. """
         # Red
-        result_red   = self.r * other_color.r
-        result_red = self.in_color_range(result_red)
+        result_red   = self.r * other[0]
         # Green
-        result_green = self.g * other_color.g
-        result_green =  self.in_color_range(result_green)
+        result_green = self.g * other[1]
         # Blue
-        result_blue  = self.b * other_color.b
-        result_blue = self.in_color_range(result_blue)
-
+        result_blue  = self.b * other[2]
         return Color(result_red, result_green, result_blue)
 
     @staticmethod
@@ -68,3 +57,10 @@ class Color:
     def to_tuple(self):
         """ Retorna os valores (R, G, B) da cor como uma tupla. """
         return (self.r, self.g, self.b)
+    
+    def to_normalized_tuple(self):
+        """ Retorna os valores da cor normalizados em uma tupla. """
+        red_normalized = self.r / 255
+        green_normalized = self.g / 255
+        blue_normalized = self.b / 255
+        return (red_normalized, green_normalized, blue_normalized)

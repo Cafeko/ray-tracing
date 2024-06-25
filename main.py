@@ -23,7 +23,7 @@ vertices = [Point(0, 0, 50), Point(40, 0, 0), Point(0, 25, 0), Point(0, -25, 0)]
 triplas = [(0, 1, 2), (0, 3, 1), (0, 2, 3), (1, 3, 2)]
 m = Mesh(vertices, triplas, 4, 4, material_mesh)
 # Esfera
-material_esfera = Material(Color(0, 0, 255))
+material_esfera = Material(Color(0, 0, 200))
 s = Sphere(Point(-40 , 20, 50), 20, material_esfera)
 objects_list = [p, m, s]
 
@@ -38,7 +38,7 @@ print(f"{time.time() - start_time:^7.4f} -- Luzes criadas")
 
 
 # Ambiente:
-main_env = Environment(objects_list, Color(0, 0, 255), lights_list)
+main_env = Environment(objects_list, Color(0, 0, 200), lights_list)
 
 print(f"{time.time() - start_time:^7.4f} -- Ambiente criados")
 
@@ -57,7 +57,7 @@ print(f"{time.time() - start_time:^7.4f} -- Raycast iniciado")
 matrix = c.start_ray_cast(main_env)
 print(f"{time.time() - start_time:^7.4f} -- Raycast finalizado")
 generate_image(matrix, width, heigth, "Imagem")
-print(f"{time.time() - start_time:^7.4f} -- Imagem 1 criada")
+print(f"{time.time() - start_time:^7.4f} -- Imagem criada")
 
 print(f"{time.time() - start_time:^7.4f} -- Fim")
 

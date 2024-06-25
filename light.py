@@ -23,15 +23,16 @@ def sum_of_lights(lights_list : list, object_material : Material, surface_normal
     for light in lights_list:
         # Difusa:
         to_light_vector = (light.position - collision_point).normalize()
-        difuse_light = difuse_lighting(light.color, object_material.color, object_material.difusion, surface_normal, to_light_vector)
+        object_color_normaized = object_material.color.to_normalized_tuple()
+        difuse_light = difuse_lighting(light.color, object_color_normaized, object_material.difusion, surface_normal, to_light_vector)
         # Especular:
         specular_light = specular_lighting()
         # Somatorio:
         total_light += difuse_light + specular_light
     return total_light
 
-def difuse_lighting(light_intensity : Color, object_color : Color, difuse_coef : float, normal : Vector, light_vector):
-    return light_intensity * object_color * difuse_coef * (normal.dot_product(light_vector))
+def difuse_lighting(light_intensity : Color, object_color_normalized : Color, difuse_coef : float, normal : Vector, light_vector):
+    return light_intensity * object_color_normalized * difuse_coef * (normal.dot_product(light_vector))
 
 
 def specular_lighting():
