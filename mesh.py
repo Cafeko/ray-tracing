@@ -3,6 +3,7 @@ from material import *
 from point import *
 from plane import *
 from ray import *
+from sphere import *
 
 class Mesh(Object):
     def __init__(self, vertices : list, triples : list, n_triangles: int, n_vertices : int,
@@ -40,6 +41,7 @@ class Mesh(Object):
                 self.normals_vertices = self.create_vertices_normals_list()
             else:
                 self.normals_vertices = normals_vertices
+            self.bounding_sphere = self.make_bounding_sphere()
         else:
             return None
 
@@ -148,6 +150,21 @@ class Mesh(Object):
             vertices_normals[i] = vertices_normals[i].normalize()
         return vertices_normals
 
+    def make_bounding_sphere(self):
+        # centro da esfera:
+        center = self.get_center()
+        # Raio da esfera
+        distance = 0
+        for p in self.vertices:
+            distance_p = center.distance_to(p)
+            if distance_p > distance:
+                distance = distance_p
+        return Sphere(center, distance+1, Material())
+    
+    def update_bounding_sphere(self):
+        self.bounding_sphere = self.make_bounding_sphere()
+
+
     def intersects(self, ray : Ray):
         """
         Percorre todos os triangulos da malha e verifica se eles colidem com o raio,
@@ -163,6 +180,8 @@ class Mesh(Object):
         Returns:
         Dicionario com informações da colisão: parametro t, cor, vetor normal do triangulo que colidiu.
         """
+        if self.bounding_sphere.intersects(ray) == None:
+            return None
         lower_t = float("inf")
         lower_info = None
         # Percorre triangulos:
@@ -197,6 +216,9 @@ class Mesh(Object):
         else:
             return False
     
+    def its_close(self):
+        pass
+
     def get_material(self):
         """ Retorna o material da malha. """
         return self.material
@@ -229,6 +251,7 @@ class Mesh(Object):
             self.vertices[i] = transformation_matrix.dot_product(self.vertices[i])
         self.normals_triangles = self.create_triangles_normals_list()
         self.normals_vertices = self.create_vertices_normals_list()
+        self.update_bounding_sphere()
     
     def move(self, movement_vector : Vector):
         """Função que movimenta a mesh a partir de uma transformação de translação."""
@@ -252,6 +275,7 @@ class Mesh(Object):
         center_to_position = position_to_center.inverse()
         t = center_to_position.dot_product(scale_matrix).dot_product(position_to_center)
         self.apply_transform(t)
+
 
 ### Classe "Mesh"
  ## - Propósito: Representa uma coleção de vértices, arestas e faces que define a forma de um objeto 3D.

@@ -1,5 +1,5 @@
 class Color:
-    def __init__(self, red : int, green : int, blue : int):
+    def __init__(self, red : int = 0, green : int = 0, blue : int = 0):
         """
         Classe que contem os valores (R, G, B) de uma com e é capas de fazer operações entre cores.
 
