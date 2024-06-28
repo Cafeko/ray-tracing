@@ -6,6 +6,7 @@ from color import *
 from environment import *
 from light import *
 from camera import *
+import mesh_shapes as shape
 
 # -- Cores ------------------------------------------------------------------------------------------------- #
 
@@ -16,6 +17,7 @@ Green = Color(0, 255, 0)
 Blue = Color (0, 0, 255)
 Gold = Color(249, 166, 2)
 YellowGround = Color(180, 180, 19)
+Ceu = Color(29, 155, 255)
 
 # ---------------------------------------------------------------------------------------------------------- #
 # -- Exemplo ----------------------------------------------------------------------------------------------- #
@@ -62,7 +64,46 @@ env = Environment(objects=objects_list, lights=lights_list, color=Black)
 EXEMPLO = {"camera": c, "env" : env, "background" : back_color}
 
 # ---------------------------------------------------------------------------------------------------------- #
-# -- Teste ----------------------------------------------------------------------------------------------- #
+# -- Casa -------------------------------------------------------------------------------------------------- #
+# Background:
+back_color = Ceu
+
+# Materiais:
+ambient_coef = 0.1
+obj_difusion = 1
+obj_difusion = 0.55
+obj_specular = 0.1
+obj_roughness = 2
+
+cubo_material = Material(color=White, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness)
+
+# Objetos
+v = shape.CUBE["vertices"]
+t = shape.CUBE["triplas"]
+cubo = Mesh(v, t, len(t), len(v), cubo_material)
+objects_list = [cubo]
+
+# Transformações:
+cubo.move(Vector(40, 0, 39.5))
+cubo.scale(Vector(50, 50, 50))
+cubo.rotate(40, 2)
+cubo.rotate(37, 1)
+
+# Luz:
+l = Light(color=White, position=Point(-100, 100, 175))
+lights_list = [l]
+
+# Camera:
+c = Camera(position=Point(-50, 0, 40), target=Point(0, 0, 40), screen_distance=50, fov_angle=90,
+           resolution_height=450, resolution_width=600)
+
+# Ambiente:
+env = Environment(objects=objects_list, lights=lights_list, color=Black)
+
+CASA = {"camera": c, "env" : env, "background" : back_color}
+
+# ---------------------------------------------------------------------------------------------------------- #
+# -- Teste ------------------------------------------------------------------------------------------------- #
 # Background:
 back_color = Black
 

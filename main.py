@@ -15,7 +15,7 @@ print(f"{time.time() - start_time:^7.4f} -- Inicio")
 
 
 # Cena:
-cena = scene.EXEMPLO
+cena = scene.CASA
 c = cena["camera"]
 env = cena["env"]
 background = cena["background"].to_tuple()
