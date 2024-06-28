@@ -75,7 +75,7 @@ def difuse_lighting(light_intensity : Color, object_color_normalized : Color, di
     normal (Vector): vetor normal da superfice no ponto de colisão.
     light_vector (Vector): Vetor que aponta do ponto de colisão até a luz.
     """
-    return light_intensity * object_color_normalized * difuse_coef * max(normal.dot_product(light_vector), 0)
+    return light_intensity * object_color_normalized * difuse_coef * normal.dot_product(light_vector)
 
 
 def specular_lighting(light_intensity : Color, specular_coef : float, specular_reflection : Vector, observer_vector : Vector, object_roughness : float):
