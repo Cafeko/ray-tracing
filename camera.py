@@ -7,7 +7,7 @@ from light import *
 from math import *
 
 class Camera:
-    def __init__(self, position : Point, target : Point, screen_distance : float,
+    def __init__(self, position : Point, target : Point, screen_distance : float, fov_angle: float,
                  resolution_height : int, resolution_width  : int, up_vector : Vector =Vector(0,0,1)):
         """
         Inicializa a câmera, a posicionando e definindo seus valores.
@@ -25,10 +25,12 @@ class Camera:
         self.target : Point = target
         #Screen:
         self.scr_dist : float = screen_distance
+        self.initial_scr_dist : float = self.scr_dist
         self.res_h : int = self.set_resolution_height(resolution_height)
         self.res_w : int = self.set_resolution_width(resolution_width)
-        self.scr_size_x : float = 50
-        self.scr_size_y : float = 37.5
+        self.scr_size_x : float
+        self.scr_size_y : float
+        self.set_screen_size(fov_angle, self.scr_dist)
         # Vectors:
         self.vec_target : Vector = self.get_target_vector().normalize()
         self.vec_up : Vector = self.set_vector_up(up_vector)
@@ -40,6 +42,37 @@ class Camera:
         # Ray
         self.ray : Ray = Ray(self.position, Vector())
         self.current_pixel = [0,0]
+
+    def set_screen_size(self, fov_angle : float, screen_distance : float):
+        """
+        Define o tamanho da tela de acordo com a distancia e o FOV.
+        Calcula a largura descobrindo o tamanho de metade da tela e depois multiplicando por dois.
+        Calcula a altura a partir da escala da resolução da altura em relação a largura.
+        
+        Args:
+        fov_angle (float): Angulo do campo de visão.
+        screen_distance (float): distancia entre a tela e a camera.
+        """
+        # Angulo para radiano:
+        half = fov_angle / 2.0
+        rad = radians(half)
+        # Calcula largura da tela:
+        scr_half_x = screen_distance * tan(rad)
+        self.scr_size_x = scr_half_x * 2
+        # Calcula escala da altura em relação a largura:
+        scale = self.res_h/self.res_w
+        # Calcula altura da tela:
+        self.scr_size_y = self.scr_size_x * scale
+
+    def zoom(self, zoom_value : float):
+        """ Da zoom na camera modificando a distancia entre a tela e a camera. """
+        if self.scr_dist + zoom_value > 0:
+            self.scr_dist += zoom_value
+
+
+    def reset_zoom(self):
+        """ Retorna a distancia da tela para seu valor inicial. """
+        self.scr_dist = self.initial_scr_dist
 
 
     def get_target_vector(self):

@@ -32,14 +32,13 @@ print(f"{time.time() - start_time:^7.4f} -- Objetos criados")
 
 # Luzes:
 light1 = Light(Color(255, 255, 255), Point(0, -200, 150))
-light2 = Light(Color(255, 255, 255), Point(0, 0, 200))
 lights_list = [light1]
 
 print(f"{time.time() - start_time:^7.4f} -- Luzes criadas")
 
 
 # Ambiente:
-main_env = Environment(objects_list, lights_list, Color(150, 0, 0))
+main_env = Environment(objects_list, lights_list, Color(100, 0, 0))
 
 print(f"{time.time() - start_time:^7.4f} -- Ambiente criados")
 
@@ -47,8 +46,10 @@ print(f"{time.time() - start_time:^7.4f} -- Ambiente criados")
 # Camera:
 width = 600
 heigth = 450
-c = Camera(position=Point(100, 0, 0), target=Point(0, 0, 0), screen_distance=20,
+c = Camera(position=Point(100, 0, 0), target=Point(0, 0, 0), screen_distance=100, fov_angle=90,
            resolution_height=heigth, resolution_width=width)
+
+c.zoom(100)
 
 print(f"{time.time() - start_time:^7.4f} -- Camera criada")
 
