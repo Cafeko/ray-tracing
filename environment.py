@@ -45,3 +45,8 @@ class Environment:
     def get_lights(self):
         """ Retorna lista de luzes do ambiente. """
         return self.lights
+    
+    def move_objects(self, movement_vector : Vector):
+        """ Move todos os objetos do ambiente. """
+        for o in self.objects:
+            o.move(movement_vector)

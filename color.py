@@ -52,7 +52,7 @@ class Color:
             value = 255
         elif value < 0:
             value = 0
-        return value    
+        return int(value)
     
     def to_tuple(self):
         """ Retorna os valores (R, G, B) da cor como uma tupla. """

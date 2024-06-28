@@ -20,7 +20,7 @@ class Camera:
         up_vector (Vector): vetor que aponta para cima.
     """
     def __init__(self, position : Point, target : Point, screen_distance : float, fov_angle: float,
-                 resolution_height : int, resolution_width  : int, up_vector : Vector =Vector(0,0,1)):
+                 resolution_height : int, resolution_width : int, up_vector : Vector =Vector(0,0,1)):
         # Posições:
         self.position : Point = position
         self.target : Point = target

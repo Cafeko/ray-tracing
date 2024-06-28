@@ -7,57 +7,35 @@ from material import *
 from color import *
 from environment import *
 from light import *
+import scenes as scene
 import time
 
 start_time = time.time()
 print(f"{time.time() - start_time:^7.4f} -- Inicio")
 
 
-# Cria objetos:
-# Plano
-material_plano = Material(Color(0, 255, 0))
-p = Plane(Point(0, 0, -20), Vector(0, 0, 1), material_plano, False, True)
-# Mesh
-material_mesh = Material(Color(255, 0, 0))
-vertices = [Point(0, 0, 50), Point(40, 0, 0), Point(0, 25, 0), Point(0, -25, 0)]
-triplas = [(0, 1, 2), (0, 3, 1), (0, 2, 3), (1, 3, 2)]
-m = Mesh(vertices, triplas, 4, 4, material_mesh)
-# Esfera
-material_esfera = Material(Color(0, 0, 200))
-s = Sphere(Point(0 , 60, 10), 20, material_esfera)
-objects_list = [p, s]
+# Cena:
+cena = scene.EXEMPLO
+c = cena["camera"]
+env = cena["env"]
+background = cena["background"].to_tuple()
 
-print(f"{time.time() - start_time:^7.4f} -- Objetos criados")
-
-
-# Luzes:
-light1 = Light(Color(255, 255, 255), Point(15000, -20000, 40000))
-lights_list = [light1]
-
-print(f"{time.time() - start_time:^7.4f} -- Luzes criadas")
-
-
-# Ambiente:
-main_env = Environment(objects_list, lights_list, Color(100, 0, 0))
-
-print(f"{time.time() - start_time:^7.4f} -- Ambiente criados")
-
-
-# Camera:
-width = 600
-heigth = 450
-c = Camera(position=Point(-100, 0, 0), target=Point(0, 0, 0), screen_distance=100, fov_angle=90,
-           resolution_height=heigth, resolution_width=width)
-
-print(f"{time.time() - start_time:^7.4f} -- Camera criada")
+print(f"{time.time() - start_time:^7.4f} -- Cena Carregada")
 
 
 # Gerar imagem:
+width = c.res_w
+heigth = c.res_h
+
 print(f"{time.time() - start_time:^7.4f} -- Raycast iniciado")
-matrix = c.start_ray_cast(main_env)
+
+matrix = c.start_ray_cast(env)
+
 print(f"{time.time() - start_time:^7.4f} -- Raycast finalizado")
-generate_image(matrix, width, heigth, "Imagem")
+
+generate_image(matrix, width, heigth, "Imagem", background)
 print(f"{time.time() - start_time:^7.4f} -- Imagem criada")
+
 
 print(f"{time.time() - start_time:^7.4f} -- Fim")
 
