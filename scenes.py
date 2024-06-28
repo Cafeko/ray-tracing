@@ -71,26 +71,37 @@ back_color = Ceu
 # Materiais:
 ambient_coef = 0.1
 obj_difusion = 1
-obj_difusion = 0.55
-obj_specular = 0.1
-obj_roughness = 2
+obj_specular = 0
+obj_roughness = 1
 
 cubo_material = Material(color=White, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness)
+teto_material = Material(color=Red, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness)
+chao_material = Material(color=Green, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness)
 
 # Objetos
-v = shape.CUBE["vertices"]
-t = shape.CUBE["triplas"]
-cubo = Mesh(v, t, len(t), len(v), cubo_material)
-objects_list = [cubo]
+cubo_v = shape.CUBE["vertices"]
+cubo_t = shape.CUBE["triplas"]
+cubo = Mesh(cubo_v, cubo_t, len(cubo_t), len(cubo_v), cubo_material)
+teto_v = shape.ROOF["vertices"]
+teto_t = shape.ROOF["triplas"]
+teto = Mesh(teto_v, teto_t, len(teto_t), len(teto_v), teto_material)
+chao = Plane(Point(0,0,0), Vector(0,0,1), chao_material, inf=False, distance=2500)
+objects_list = [chao, cubo, teto]
 
 # Transformações:
-cubo.move(Vector(40, 0, 39.5))
-cubo.scale(Vector(50, 50, 50))
-cubo.rotate(40, 2)
-cubo.rotate(37, 1)
+cubo.move(Vector(-0.5, 0.5, -0.5))
+cubo.scale(Vector(50, 30, 30))
+cubo.move(Vector(30, 0, 15))
+teto.move(Vector(-0.5, 0.5, -0.3333333333333333))
+teto.scale(Vector(55,35,16))
+teto.move(Vector(30, 0, 34))
+casa = [cubo, teto]
+for o in casa:
+    o.move(Vector(50,-90,0))
+    o.rotate(-65, 2)
 
 # Luz:
-l = Light(color=White, position=Point(-100, 100, 175))
+l = Light(color=White, position=Point(-2000, 1000, 4000))
 lights_list = [l]
 
 # Camera:
@@ -98,7 +109,7 @@ c = Camera(position=Point(-50, 0, 40), target=Point(0, 0, 40), screen_distance=5
            resolution_height=450, resolution_width=600)
 
 # Ambiente:
-env = Environment(objects=objects_list, lights=lights_list, color=Black)
+env = Environment(objects=objects_list, lights=lights_list, color=Blue)
 
 CASA = {"camera": c, "env" : env, "background" : back_color}
 
@@ -122,7 +133,6 @@ objects_list = [obj]
 
 # Transformações:
 obj.move(Vector(80, 0, 40))
-
 
 # Luz:
 l = Light(color=White, position=Point(-100, 100, 175))
