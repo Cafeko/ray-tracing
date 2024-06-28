@@ -37,7 +37,7 @@ def sum_of_lights(lights_list : list, object_material : Material, surface_normal
 
 
 def difuse_lighting(light_intensity : Color, object_color_normalized : Color, difuse_coef : float, normal : Vector, light_vector):
-    return light_intensity * object_color_normalized * difuse_coef * (normal.dot_product(light_vector))
+    return light_intensity * object_color_normalized * difuse_coef * max(normal.dot_product(light_vector), 0)
 
 
 def specular_lighting(light_intensity : Color, specular_coef : float, specular_reflection : Vector, observer_vector : Vector, object_roughness : float):

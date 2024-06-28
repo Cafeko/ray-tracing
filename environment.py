@@ -3,7 +3,7 @@ from color import *
 from light import *
 
 class Environment:
-    def __init__(self, objects : list, color : Color, lights : list):
+    def __init__(self, objects : list, lights : list, color : Color = Color(0, 0, 0)):
         """
         Ambiente que contem os objetos.
 

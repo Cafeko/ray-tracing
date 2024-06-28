@@ -24,21 +24,22 @@ triplas = [(0, 1, 2), (0, 3, 1), (0, 2, 3), (1, 3, 2)]
 m = Mesh(vertices, triplas, 4, 4, material_mesh)
 # Esfera
 material_esfera = Material(Color(0, 0, 200))
-s = Sphere(Point(0 , 40, 50), 20, material_esfera)
+s = Sphere(Point(0 , 60, 10), 20, material_esfera)
 objects_list = [p, s]
 
 print(f"{time.time() - start_time:^7.4f} -- Objetos criados")
 
 
 # Luzes:
-light1 = Light(Color(255, 255, 255), Point(0, -40, 50))
+light1 = Light(Color(255, 255, 255), Point(0, -200, 150))
+light2 = Light(Color(255, 255, 255), Point(0, 0, 200))
 lights_list = [light1]
 
 print(f"{time.time() - start_time:^7.4f} -- Luzes criadas")
 
 
 # Ambiente:
-main_env = Environment(objects_list, Color(0, 0, 255), lights_list)
+main_env = Environment(objects_list, lights_list, Color(150, 0, 0))
 
 print(f"{time.time() - start_time:^7.4f} -- Ambiente criados")
 
