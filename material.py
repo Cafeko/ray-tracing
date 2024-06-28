@@ -13,7 +13,6 @@ class Material:
         reflection (float): indice de refracao do material.
         transmission (float): Componente transmissiva do material, que afeta a transparencia.
     """
-
     def __init__(self, color: Color, ambient=0.2, difusion=1, specular=0.5, roughness=100, reflection=1.5, transmission=0.5):
         self.color = color
         self.ambient = ambient

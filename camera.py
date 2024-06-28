@@ -7,19 +7,20 @@ from light import *
 from math import *
 
 class Camera:
-    def __init__(self, position : Point, target : Point, screen_distance : float, fov_angle: float,
-                 resolution_height : int, resolution_width  : int, up_vector : Vector =Vector(0,0,1)):
-        """
-        Inicializa a câmera, a posicionando e definindo seus valores.
+    """
+    Camera que faz o raycast.
 
-        Args:
+    Atributos:
         position (Point): ponto em que a câmera está. 
         target (Point): ponto para o qual a câmera está olhando.
         screen_distance (float): distancia entre a câmera e a tela.
+        fov_angle (float): angulo do campo de visão da camera.
         resolution_height (int): altura da tela.
         resolution_width (int): largura da tela.
         up_vector (Vector): vetor que aponta para cima.
-        """
+    """
+    def __init__(self, position : Point, target : Point, screen_distance : float, fov_angle: float,
+                 resolution_height : int, resolution_width  : int, up_vector : Vector =Vector(0,0,1)):
         # Posições:
         self.position : Point = position
         self.target : Point = target
