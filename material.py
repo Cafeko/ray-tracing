@@ -14,7 +14,7 @@ class Material:
         transmission (float): Componente transmissiva do material, que afeta a transparencia.
     """
 
-    def __init__(self, color: Color, ambient=0.2, difusion=1, specular=0.5, roughness=25, reflection=1.5, transmission=0.5):
+    def __init__(self, color: Color, ambient=0.2, difusion=1, specular=0.5, roughness=100, reflection=1.5, transmission=0.5):
         self.color = color
         self.ambient = ambient
         self.difusion = difusion  

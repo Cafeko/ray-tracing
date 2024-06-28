@@ -41,4 +41,4 @@ def difuse_lighting(light_intensity : Color, object_color_normalized : Color, di
 
 
 def specular_lighting(light_intensity : Color, specular_coef : float, specular_reflection : Vector, observer_vector : Vector, object_roughness : float):
-    return light_intensity * specular_coef * ((specular_reflection * observer_vector) ** object_roughness)
+    return light_intensity * specular_coef * (max(specular_reflection.dot_product(observer_vector), 0) ** object_roughness)
