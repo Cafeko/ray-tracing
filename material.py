@@ -21,3 +21,8 @@ class Material:
         self.reflection = reflection  
         self.transmission = transmission
         self.roughness = roughness
+       # incluir os coeficientes de reflexão (kr) e refração (kt), além do índice de refração (ior):
+        self.kr = kr  # Coeficiente de Reflexão
+        self.kt = kt  # Coeficiente de Refração
+        self.ior = ior  # Índice de Refração
+
