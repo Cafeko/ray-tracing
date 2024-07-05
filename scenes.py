@@ -33,10 +33,12 @@ spheres_difusion = 0.55
 spheres_specular = 0.1
 spheres_roughness = 2
 
-p_material = Material(color=YellowGround, ambient=ambient_coef, difusion=plane_difusion, specular=plane_specular, roughness=plane_roughness)
-s_material_1 = Material(color=Red, ambient=ambient_coef, difusion=spheres_difusion, specular=spheres_specular, roughness=spheres_roughness)
-s_material_2 = Material(color=Green, ambient=ambient_coef, difusion=spheres_difusion, specular=spheres_specular, roughness=spheres_roughness)
-s_material_3 = Material(color=Blue, ambient=ambient_coef, difusion=spheres_difusion, specular=spheres_specular, roughness=spheres_roughness)
+objects_reflection = 1
+
+p_material = Material(color=YellowGround, ambient=ambient_coef, difusion=plane_difusion, specular=plane_specular, roughness=plane_roughness, reflection=objects_reflection)
+s_material_1 = Material(color=Red, ambient=ambient_coef, difusion=spheres_difusion, specular=spheres_specular, roughness=spheres_roughness, reflection=objects_reflection)
+s_material_2 = Material(color=Green, ambient=ambient_coef, difusion=spheres_difusion, specular=spheres_specular, roughness=spheres_roughness, reflection=objects_reflection)
+s_material_3 = Material(color=Blue, ambient=ambient_coef, difusion=spheres_difusion, specular=spheres_specular, roughness=spheres_roughness, reflection=objects_reflection)
 
 # Objetos
 plane = Plane(point=Point(0, 0, 0), normal=Vector(0, 0, 1), material=p_material) 
@@ -73,10 +75,11 @@ ambient_coef = 0.1
 obj_difusion = 1
 obj_specular = 0
 obj_roughness = 1
+obj_reflection = 1
 
-cubo_material = Material(color=White, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness)
-teto_material = Material(color=Red, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness)
-chao_material = Material(color=Green, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness)
+cubo_material = Material(color=White, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness, reflection=obj_reflection)
+teto_material = Material(color=Red, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness, reflection=obj_reflection)
+chao_material = Material(color=Green, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness, reflection=obj_reflection-0.4)
 
 # Objetos
 cubo_v = shape.CUBE["vertices"]
