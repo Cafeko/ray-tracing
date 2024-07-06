@@ -190,7 +190,7 @@ class Camera:
                     pixel_color_tuple = pixel_color.to_tuple()
                     screen_matrix[y].append(pixel_color_tuple)
                 else: 
-                    screen_matrix[y].append(None)
+                    screen_matrix[y].append(env.get_background_color().to_tuple())
         return screen_matrix
 
 

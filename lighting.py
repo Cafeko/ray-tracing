@@ -121,6 +121,7 @@ def transmission_lighting(env : Environment, object_material : Material, surface
                         collision_point : Point, ray : Ray, recursions_level : int):
     if object_material.transmission != 0:
         incident_vector = ray.get_direction().normalize()
+        # Entrando ou saindo do objeto:
         in_or_out = surface_normal.dot_product(incident_vector)
         if in_or_out > 0: # Saindo do objeto
             n_in = object_material.ir
@@ -129,24 +130,31 @@ def transmission_lighting(env : Environment, object_material : Material, surface
             n_in = env.get_ir()
             n_out = object_material.ir
         # Calcula vetor de transmição:
-        cos_teta_i = surface_normal.dot_product(incident_vector.invert())
+        cos_teta_i = surface_normal.dot_product(incident_vector)
         sen_teta_i = sqrt(max(1 - (cos_teta_i**2), 0))
         sen_teta_t = n_in/n_out * sen_teta_i
-        cos_teta_t = sqrt(1 - (sen_teta_t**2))
-        ref2m = sen_teta_i/sen_teta_t
-        transmission_vector = (1/ref2m * incident_vector) + (((1/ref2m * cos_teta_i) - cos_teta_t) * surface_normal)
-        transmission_vector = transmission_vector.normalize()
-        # Busca intercessão com objetos:
-        transmission_ray = Ray(collision_point, transmission_vector)
-        object_colission_info = get_intersected_object_info(env.get_objects(), transmission_ray)
-        if object_colission_info != None:
-            transmission_intercection_point = ray.get_point_by_parameter(object_colission_info["t"])
-            transmission_obj_material = object_colission_info["material"]
-            transmission_surface_normal = object_colission_info["normal"]
-            transmission_color = phong_lighting(env, transmission_obj_material, transmission_surface_normal,
-                                  transmission_intercection_point, transmission_ray, (recursions_level - 1))
-            transmission_light = transmission_color * object_material.transmission
-            return transmission_light
+        if sen_teta_i <= 1:
+            cos_teta_t = sqrt(max(1 - (sen_teta_t**2), 0))
+            n = n_in/n_out
+            if in_or_out > 0:
+                transmission_vector = (n * incident_vector) + ((n * cos_teta_i - cos_teta_t) * surface_normal)
+            else:
+                transmission_vector = (n * incident_vector) - ((n * cos_teta_i + cos_teta_t) * surface_normal)
+            transmission_vector = transmission_vector.normalize()
+            # Busca intercessão com objetos:
+            transmission_ray = Ray(collision_point, transmission_vector)
+            object_colission_info = get_intersected_object_info(env.get_objects(), transmission_ray)
+            if object_colission_info != None:
+                # Faz transmissão:
+                transmission_intercection_point = ray.get_point_by_parameter(object_colission_info["t"])
+                transmission_obj_material = object_colission_info["material"]
+                transmission_surface_normal = object_colission_info["normal"]
+                transmission_color = phong_lighting(env, transmission_obj_material, transmission_surface_normal,
+                                    transmission_intercection_point, transmission_ray, (recursions_level - 1))
+                transmission_light = transmission_color * object_material.transmission
+                return transmission_light
+            else:
+                return Color(0, 0, 0)
         else:
             return Color(0, 0, 0)
     else:
