@@ -10,11 +10,13 @@ class Environment:
         objects ([Object]): Lista de objetos que estão no ambiente.
         lights ([Light]): Lista de luzes que estão no ambiente.
         color (Color): Cor do ambiente.
+        ir (Float): indice de refração do ambiente.
     """
-    def __init__(self, objects : list, lights : list, color : Color = Color(0, 0, 0)):
+    def __init__(self, objects : list, lights : list, color : Color = Color(0, 0, 0), ir : float = 1.0):
         self.objects = self.set_objects(objects)
         self.color = color
         self.lights = self.set_lights(lights)
+        self.ir = self.set_ir(ir)
 
     def set_objects(self, objects_list : list):
         """ Adiciona objetos, de uma lista recebida, na lista de objetos do ambiente. """
@@ -34,6 +36,12 @@ class Environment:
         self.lights = new_list
         return self.lights
     
+    def set_ir(self, ir : float):
+        if ir < 1:
+            ir = 1
+        self.ir = ir
+        return self.ir
+
     def get_color(self):
         """ Retorna a cor da iluminação do ambiente. """
         return self.color
@@ -46,6 +54,9 @@ class Environment:
         """ Retorna lista de luzes do ambiente. """
         return self.lights
     
+    def get_ir(self):
+        return self.ir
+
     def move_objects(self, movement_vector : Vector):
         """ Move todos os objetos do ambiente. """
         for o in self.objects:
