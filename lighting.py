@@ -23,10 +23,12 @@ def phong_lighting(env : Environment, object_material : Material, surface_normal
         objects_list = env.get_objects()
         ambient_light = env.get_color()
         lights_list = env.get_lights()
+        surface_normal = surface_normal.normalize()
         ambient_value = ambient_lighting(object_material.ambient, ambient_light)
         others_value = sum_of_lights(lights_list, object_material, surface_normal, collision_point, ray, objects_list)
         reflection_value = reflection_lighting(env, object_material, surface_normal, collision_point, ray, recursions_level)
-        return (ambient_value + others_value) + reflection_value
+        transmission_value = transmission_lighting(env, object_material, surface_normal, collision_point, ray, recursions_level)
+        return ambient_value + others_value + reflection_value + transmission_value
     else:
         return Color(0, 0, 0)
 
@@ -47,7 +49,6 @@ def sum_of_lights(lights_list : list, object_material : Material, surface_normal
     """ Faz o somatorio das luzes geradas pelas fontes de luzes do ambiente no ponto. """
     total_light = Color(0, 0, 0)
     for light in lights_list:
-        surface_normal = surface_normal.normalize()
         to_light_vector = (light.position - collision_point).normalize() # Vetor que aponta do ponto para a luz.
         # Sombra:
         #to_light_ray = Ray(collision_point, to_light_vector)
@@ -101,7 +102,7 @@ def reflection_lighting(env : Environment, object_material : Material, surface_n
         inverted_ray = (ray.get_direction().invert()).normalize()
         reflection_vector = reflect_vector(surface_normal, inverted_ray)
         reflect_ray = Ray(collision_point, reflection_vector)
-        object_colission_info = get_reflected_object_info(env.get_objects(), reflect_ray)
+        object_colission_info = get_intersected_object_info(env.get_objects(), reflect_ray)
         if object_colission_info != None:
             reflection_intercection_point = ray.get_point_by_parameter(object_colission_info["t"])
             reflection_obj_material = object_colission_info["material"]
@@ -118,10 +119,41 @@ def reflection_lighting(env : Environment, object_material : Material, surface_n
 
 def transmission_lighting(env : Environment, object_material : Material, surface_normal : Vector,
                         collision_point : Point, ray : Ray, recursions_level : int):
-    pass
+    if object_material.transmission != 0:
+        incident_vector = ray.get_direction().normalize()
+        in_or_out = surface_normal.dot_product(incident_vector)
+        if in_or_out > 0: # Saindo do objeto
+            n_in = object_material.ir
+            n_out = env.get_ir()
+        else: # Entrando no objeto
+            n_in = env.get_ir()
+            n_out = object_material.ir
+        # Calcula vetor de transmição:
+        cos_teta_i = surface_normal.dot_product(incident_vector.invert())
+        sen_teta_i = sqrt(max(1 - (cos_teta_i**2), 0))
+        sen_teta_t = n_in/n_out * sen_teta_i
+        cos_teta_t = sqrt(1 - (sen_teta_t**2))
+        ref2m = sen_teta_i/sen_teta_t
+        transmission_vector = (1/ref2m * incident_vector) + (((1/ref2m * cos_teta_i) - cos_teta_t) * surface_normal)
+        transmission_vector = transmission_vector.normalize()
+        # Busca intercessão com objetos:
+        transmission_ray = Ray(collision_point, transmission_vector)
+        object_colission_info = get_intersected_object_info(env.get_objects(), transmission_ray)
+        if object_colission_info != None:
+            transmission_intercection_point = ray.get_point_by_parameter(object_colission_info["t"])
+            transmission_obj_material = object_colission_info["material"]
+            transmission_surface_normal = object_colission_info["normal"]
+            transmission_color = phong_lighting(env, transmission_obj_material, transmission_surface_normal,
+                                  transmission_intercection_point, transmission_ray, (recursions_level - 1))
+            transmission_light = transmission_color * object_material.transmission
+            return transmission_light
+        else:
+            return Color(0, 0, 0)
+    else:
+        return Color(0, 0, 0)
+    
 
-
-def get_reflected_object_info(objects_list : list, ray : Ray):
+def get_intersected_object_info(objects_list : list, ray : Ray):
     intercections = verify_intersections(ray, objects_list)
     closest = get_closest_object(intercections)
     if closest != None:

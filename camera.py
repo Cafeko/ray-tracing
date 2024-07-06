@@ -186,7 +186,7 @@ class Camera:
                     intercection_point = self.ray.get_point_by_parameter(intercections[closest]["t"])
                     obj_material = intercections[closest]["material"]
                     surface_normal = intercections[closest]["normal"]
-                    pixel_color = phong_lighting(env, obj_material, surface_normal, intercection_point, self.ray, 3)
+                    pixel_color = phong_lighting(env, obj_material, surface_normal, intercection_point, self.ray, 4)
                     pixel_color_tuple = pixel_color.to_tuple()
                     screen_matrix[y].append(pixel_color_tuple)
                 else: 
