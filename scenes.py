@@ -33,7 +33,7 @@ spheres_difusion = 0.55
 spheres_specular = 0.1
 spheres_roughness = 2
 
-objects_reflection = 1
+objects_reflection = 0.6
 
 p_material = Material(color=YellowGround, ambient=ambient_coef, difusion=plane_difusion, specular=plane_specular, roughness=plane_roughness, reflection=objects_reflection)
 s_material_1 = Material(color=Red, ambient=ambient_coef, difusion=spheres_difusion, specular=spheres_specular, roughness=spheres_roughness, reflection=objects_reflection)
@@ -53,7 +53,7 @@ sphere2.move(Vector(120, 110, 50))
 sphere3.move(Vector(120, -110, 50))
 
 # Luz:
-l = Light(color=White, position=Point(15, -120, 120))
+l = Light(color=White, position=Point(-150, -120, 120))
 lights_list = [l]
 
 # Camera:

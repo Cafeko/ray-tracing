@@ -5,7 +5,7 @@ from matrix import Matrix
 
 class Object(abc.ABC):
     def __init__(self):
-        self.parameter_min = 0.0
+        self.parameter_min = 0.001
     
     @abc.abstractmethod
     def intersects(self, ray):

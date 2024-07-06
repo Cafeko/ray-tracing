@@ -50,9 +50,9 @@ def sum_of_lights(lights_list : list, object_material : Material, surface_normal
         surface_normal = surface_normal.normalize()
         to_light_vector = (light.position - collision_point).normalize() # Vetor que aponta do ponto para a luz.
         # Sombra:
-        to_light_ray = Ray(collision_point, to_light_vector)
-        if verify_intersections(to_light_ray, objects_list) != {}:
-            continue
+        #to_light_ray = Ray(collision_point, to_light_vector)
+        #if verify_intersections(to_light_ray, objects_list) != {}:
+        #    continue
         # Difusa:
         object_color_normaized = object_material.color.to_normalized_tuple()
         difuse_light = difuse_lighting(light.color, object_color_normaized, object_material.difusion, surface_normal, to_light_vector)
