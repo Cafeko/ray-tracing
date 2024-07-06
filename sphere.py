@@ -26,12 +26,12 @@ class Sphere(Object):
                 t1 = (-b + sqrt(delta))/(2 * a)
                 t2 = (-b - sqrt(delta))/(2 * a)
                 ts = []
-                if t1 > self.parameter_min:
-                    ts.append(t1)
-                if t2 > self.parameter_min:
-                    ts.append(t2)
+                ts.append(t1)
+                ts.append(t2)
                 if len(ts) > 0:
-                    return {"t" : min(ts), "material" : self.get_material(),  "normal" : self.collision_normal(min(ts), ray)}
+                    t = min(ts)
+                    if t > self.parameter_min:
+                        return {"t" : min(ts), "material" : self.get_material(),  "normal" : self.collision_normal(min(ts), ray)}
             else:
                 t = (-b)/(2 * a)
                 if t > self.parameter_min:
