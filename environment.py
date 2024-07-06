@@ -12,9 +12,11 @@ class Environment:
         color (Color): Cor do ambiente.
         ir (Float): indice de refração do ambiente.
     """
-    def __init__(self, objects : list, lights : list, color : Color = Color(0, 0, 0), ir : float = 1.0):
+    def __init__(self, objects : list, lights : list, color : Color = Color(0, 0, 0),
+                 background_color : Color = Color(0, 0, 0), ir : float = 1.0):
         self.objects = self.set_objects(objects)
         self.color = color
+        self.background_color = background_color
         self.lights = self.set_lights(lights)
         self.ir = self.set_ir(ir)
 
@@ -46,6 +48,10 @@ class Environment:
         """ Retorna a cor da iluminação do ambiente. """
         return self.color
     
+    def get_background_color(self):
+        """ Retorna a cor do background do ambiente. """
+        return self.background_color
+
     def get_objects(self):
         """ Retorna lista de objetos do ambiente. """
         return self.objects

@@ -18,7 +18,6 @@ print(f"{time.time() - start_time:^7.4f} -- Inicio")
 cena = scene.EXEMPLO
 c = cena["camera"]
 env = cena["env"]
-background = cena["background"].to_tuple()
 
 print(f"{time.time() - start_time:^7.4f} -- Cena Carregada")
 
@@ -33,7 +32,7 @@ matrix = c.start_ray_cast(env)
 
 print(f"{time.time() - start_time:^7.4f} -- Raycast finalizado")
 
-generate_image(matrix, width, heigth, "Imagem", background)
+generate_image(matrix, width, heigth, "Imagem")
 print(f"{time.time() - start_time:^7.4f} -- Imagem criada")
 
 
