@@ -126,25 +126,25 @@ obj_difusion = 0.55
 obj_specular = 0.1
 obj_roughness = 2
 
-obj_material = Material(color=White, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness)
+obj_material = Material(color=Pink, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness)
 
 # Objetos
 obj = Sphere(center=Point(0, 0, 0), radius=50, material=obj_material)
 objects_list = [obj]
 
 # Transformações:
-obj.move(Vector(80, 0, 40))
+obj.move(Vector(80, 0, 0))
 
 # Luz:
-l = Light(color=White, position=Point(-100, 100, 175))
+l = Light(color=White, position=Point(-100, 0, 0))
 lights_list = [l]
 
 # Camera:
-c = Camera(position=Point(-55, 0, 40), target=Point(0, 0, 40), screen_distance=50, fov_angle=90,
+c = Camera(position=Point(-55, 0, 0), target=Point(0, 0, 0), screen_distance=50, fov_angle=90,
            resolution_height=450, resolution_width=600)
 
 # Ambiente:
-env = Environment(objects=objects_list, lights=lights_list, color=Blue, background_color=Black)
+env = Environment(objects=objects_list, lights=lights_list, color=White, background_color=Ceu)
 
 TESTE = {"camera": c, "env" : env}
 
