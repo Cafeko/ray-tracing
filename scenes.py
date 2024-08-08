@@ -22,7 +22,7 @@ Ceu = Color(29, 155, 255)
 Pink = Color(255, 0, 255)
 
 # ---------------------------------------------------------------------------------------------------------- #
-# -- Exemplo ----------------------------------------------------------------------------------------------- #
+# -- Reflexão ----------------------------------------------------------------------------------------------- #
 # Materiais:
 ambient_coef = 0.1
 plane_difusion = 0.6
@@ -68,7 +68,7 @@ c = Camera(position=Point(-55, 0, 50), target=Point(0, 0, 40), screen_distance=5
 # Ambiente:
 env = Environment(objects=objects_list, lights=lights_list, color=Black, background_color=Black)
 
-EXEMPLO = {"camera": c, "env" : env}
+REFLEXAO = {"camera": c, "env" : env}
 
 # ---------------------------------------------------------------------------------------------------------- #
 # -- Casa -------------------------------------------------------------------------------------------------- #
@@ -151,5 +151,46 @@ c = Camera(position=Point(-60, 0, 0), target=Point(0, 0, 0), screen_distance=50,
 env = Environment(objects=objects_list, lights=lights_list, color=White, background_color=Ceu)
 
 TESTE = {"camera": c, "env" : env}
+
+# ---------------------------------------------------------------------------------------------------------- #
+# -- Reflexão 2 (Toro) ------------------------------------------------------------------------------------- #
+# Materiais:
+ambient_coef = 0.1
+plane_difusion = 0.6
+plane_specular = 0.1
+plane_roughness = 2
+spheres_difusion = 0.55
+spheres_specular = 0.1
+spheres_roughness = 2
+
+objects_reflection = 0.4
+
+material1 = Material(color=Red, ambient=ambient_coef, difusion=spheres_difusion, specular=spheres_specular, roughness=spheres_roughness, reflection=objects_reflection)
+material2 = Material(color=Blue, ambient=ambient_coef, difusion=spheres_difusion, specular=spheres_specular, roughness=spheres_roughness, reflection=1)
+wall_material = Material(color=White, ambient=ambient_coef, difusion=plane_difusion, specular=plane_specular, roughness=plane_roughness, reflection=0, transmission=1, ir=1)
+
+# Objetos
+sphere = Sphere(center=Point(0, 0, 0), radius=30, material=material1)
+toro = Toro(ring_radius=30, tube_radius=10, ring_pieces=10, tube_pieces=8, material=material2)
+objects_list = [sphere, toro]
+
+# Transformações:
+sphere.move(Vector(140, 0, 0))
+toro.move(Vector(220,0,0))
+toro.rotate(90, 1)
+toro.scale(Vector(2.5,2.5,2.5))
+
+# Luz:
+l = Light(color=White, position=Point(-40, -120, 120))
+lights_list = [l]
+
+# Camera:
+c = Camera(position=Point(-55, 0, 0), target=Point(0, 0, 0), screen_distance=50, fov_angle=70,
+           resolution_height=450, resolution_width=600)
+
+# Ambiente:
+env = Environment(objects=objects_list, lights=lights_list, color=Black, background_color=Black)
+
+REFLEXAO2 = {"camera": c, "env" : env}
 
 # ---------------------------------------------------------------------------------------------------------- #

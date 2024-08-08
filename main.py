@@ -15,7 +15,7 @@ print(f"{time.time() - start_time:^7.4f} -- Inicio")
 
 
 # Cena:
-cena = scene.TESTE
+cena = scene.REFLEXAO2
 c = cena["camera"]
 env = cena["env"]
 
@@ -32,7 +32,7 @@ matrix = c.start_ray_cast(env)
 
 print(f"{time.time() - start_time:^7.4f} -- Raycast finalizado")
 
-generate_image(matrix, width, heigth, "Imagem")
+generate_image(matrix, width, heigth, "Imagem2")
 print(f"{time.time() - start_time:^7.4f} -- Imagem criada")
 
 
