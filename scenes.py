@@ -1,6 +1,7 @@
 from plane import *
 from sphere import *
 from mesh import *
+from toro import *
 from material import *
 from color import *
 from environment import *
@@ -129,18 +130,21 @@ obj_roughness = 2
 obj_material = Material(color=Pink, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness)
 
 # Objetos
-obj = Sphere(center=Point(0, 0, 0), radius=50, material=obj_material)
+obj = Toro(ring_radius=10, tube_radius=4, ring_pieces=20, tube_pieces=10, material=obj_material)
 objects_list = [obj]
 
 # Transformações:
-obj.move(Vector(80, 0, 0))
+obj.move(Vector(0, 0, 0))
+obj.rotate(-70, 1)
+obj.rotate(25, 2)
+obj.scale(Vector(2,2,2))
 
 # Luz:
 l = Light(color=White, position=Point(-100, 0, 0))
 lights_list = [l]
 
 # Camera:
-c = Camera(position=Point(-55, 0, 0), target=Point(0, 0, 0), screen_distance=50, fov_angle=90,
+c = Camera(position=Point(-60, 0, 0), target=Point(0, 0, 0), screen_distance=50, fov_angle=90,
            resolution_height=450, resolution_width=600)
 
 # Ambiente:
