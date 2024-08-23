@@ -26,6 +26,13 @@ class Point:
             return self.x == other.x and self.y == other.y and self.z == other.z
         else:
             return False
+    
+    def __mul__(self, other):
+        """Faz a multiplicação entre um ponto e outro valor recebido, retornando o resultado."""
+        if isinstance(other, Point):
+            return Point(self.x * other.x, self.y * other.y, self.z * other.z)
+        else:
+            return Point(self.x * other, self.y * other, self.z * other)
 
     def distance_to(self, other):
         """ Calcula a distancia euclidiana ate outro ponto. """

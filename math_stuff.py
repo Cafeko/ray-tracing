@@ -9,7 +9,7 @@ def factorial(n):
 
 def binomial_coefficient(n: int, k:int):
     """Função que calcula o coeficiente binomial."""
-    if k < n:
+    if k > n:
         return 0
     else:
         return factorial(n)/(factorial(k)*factorial(n-k))
