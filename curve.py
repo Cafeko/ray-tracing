@@ -2,9 +2,10 @@ import math_stuff as maths
 from point import *
 
 class Curve:
-    def __init__(self, control_points: list, curve_complexity: int = 1):
+    def __init__(self, control_points: list, curve_complexity: int = 2):
         self.control_points = control_points
-        self.points = self.generate_curve_points(curve_complexity)
+        self.curve_complexity = curve_complexity
+        self.points = self.generate_curve_points()
 
     def calculate_bezier_curve(self, t : float):
         """Calcula o ponto na curva, de acordo com o t recebido."""
@@ -21,10 +22,10 @@ class Curve:
         binomial_coef = maths.binomial_coefficient(n, i)
         return binomial_coef*((1-t)**(n-i))*(t**i)
 
-    def generate_curve_points(self, curve_complexity : int):
-        piece = 1 / curve_complexity
+    def generate_curve_points(self,):
+        piece = 1 / self.curve_complexity-1
         points = []
-        for i in range(curve_complexity+1):
+        for i in range(self.curve_complexity):
             t = i*piece
             point = self.calculate_bezier_curve(t)
             points.append(point)
