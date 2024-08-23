@@ -7,6 +7,13 @@ def factorial(n):
     else:
         return  n * factorial(n-1)
 
+def binomial_coefficient(n: int, k:int):
+    """Função que calcula o coeficiente binomial."""
+    if k < n:
+        return 0
+    else:
+        return factorial(n)/(factorial(k)*factorial(n-k))
+
 def degree_to_rad(degree : float):
     """Converte um valor de graus para radianos."""
     return degree * 3.1415926535897932384626433 / 180
