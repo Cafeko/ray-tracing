@@ -23,7 +23,8 @@ class Curve:
         return binomial_coef*((1-t)**(n-i))*(t**i)
 
     def generate_curve_points(self,):
-        piece = 1 / self.curve_complexity-1
+        """Gera os pontos que formam a curva."""
+        piece = 1 / (self.curve_complexity-1)
         points = []
         for i in range(self.curve_complexity):
             t = i*piece
