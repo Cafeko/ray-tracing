@@ -2,6 +2,7 @@ from plane import *
 from sphere import *
 from mesh import *
 from toro import *
+from surface import *
 from material import *
 from color import *
 from environment import *
@@ -119,40 +120,6 @@ env = Environment(objects=objects_list, lights=lights_list, color=Blue, backgrou
 CASA = {"camera": c, "env" : env}
 
 # ---------------------------------------------------------------------------------------------------------- #
-# -- Teste ------------------------------------------------------------------------------------------------- #
-# Materiais:
-ambient_coef = 0.04
-obj_difusion = 5
-obj_difusion = 0.55
-obj_specular = 0.1
-obj_roughness = 2
-
-obj_material = Material(color=Pink, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness)
-
-# Objetos
-obj = Toro(ring_radius=10, tube_radius=4, ring_pieces=20, tube_pieces=10, material=obj_material)
-objects_list = [obj]
-
-# Transformações:
-obj.move(Vector(0, 0, 0))
-obj.rotate(-70, 1)
-obj.rotate(25, 2)
-obj.scale(Vector(2,2,2))
-
-# Luz:
-l = Light(color=White, position=Point(-100, 0, 0))
-lights_list = [l]
-
-# Camera:
-c = Camera(position=Point(-60, 0, 0), target=Point(0, 0, 0), screen_distance=50, fov_angle=90,
-           resolution_height=450, resolution_width=600)
-
-# Ambiente:
-env = Environment(objects=objects_list, lights=lights_list, color=White, background_color=Ceu)
-
-TESTE = {"camera": c, "env" : env}
-
-# ---------------------------------------------------------------------------------------------------------- #
 # -- Reflexão 2 (Toro) ------------------------------------------------------------------------------------- #
 # Materiais:
 ambient_coef = 0.1
@@ -192,5 +159,118 @@ c = Camera(position=Point(-55, 0, 0), target=Point(0, 0, 0), screen_distance=50,
 env = Environment(objects=objects_list, lights=lights_list, color=Black, background_color=Black)
 
 REFLEXAO2 = {"camera": c, "env" : env}
+
+# ---------------------------------------------------------------------------------------------------------- #
+# -- Teste ------------------------------------------------------------------------------------------------- #
+# Materiais:
+ambient_coef = 0.04
+obj_difusion = 5
+obj_difusion = 0.55
+obj_specular = 0.1
+obj_roughness = 2
+
+obj_material = Material(color=Pink, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness)
+
+# Objetos
+curves = [Curve([Point(0, 0, 0), Point(0, 1, 1), Point(0, 2, 0)], 5),
+          Curve([Point(1, 0, 2.5), Point(1, 1, 1.5), Point(1, 2, 2)], 5),
+          Curve([Point(2, 0, 0), Point(2, 1, 1), Point(2, 2, 0)], 5)]
+obj = Surface(obj_material, curves, 5)
+objects_list = [obj]
+
+# Transformações:
+obj.scale(Vector(30, 30, 30))
+
+
+# Luz:
+l1 = Light(color=White, position=Point(-1000, 0, 1000))
+lights_list = [l1]
+
+# Camera:
+c = Camera(position=Point(-80, -80, 100), target=Point(0, 0, 0), screen_distance=50, fov_angle=90,
+           resolution_height=450, resolution_width=600)
+
+# Ambiente:
+env = Environment(objects=objects_list, lights=lights_list, color=White, background_color=Ceu)
+
+TESTE = {"camera": c, "env" : env}
+
+# ---------------------------------------------------------------------------------------------------------- #
+# -- Superfice 1 ------------------------------------------------------------------------------------------- #
+# Materiais:
+ambient_coef = 0.04
+obj_difusion = 5
+obj_difusion = 0.55
+obj_specular = 0.1
+obj_roughness = 2
+
+obj_material = Material(color=Blue, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness)
+
+# Objetos
+curves = [Curve([Point(-1, 5, 0), Point(0, 5, 0), Point(1, 5, 0)], 5),
+          Curve([Point(-1, 0, 0), Point(0, 0, 0), Point(1, 0, 0)], 5),
+          Curve([Point(-1, 0, 1), Point(0, 0, 1), Point(1, 0, 1)], 5),
+          Curve([Point(-1, 0, 2), Point(0, 0, 2), Point(1, 0, 2)], 5),
+          Curve([Point(-1, 5, 2), Point(0, 5, 2), Point(1, 5, 2)], 5)]
+obj = Surface(obj_material, curves, 20)
+objects_list = [obj]
+
+# Transformações:
+obj.scale(Vector(50, 30, 50))
+
+
+# Luz:
+l1 = Light(color=White, position=Point(-1000, 1000, 0))
+l2 = Light(color=White, position=Point(-1000, -1000, 1000))
+lights_list = [l1 ,l2]
+
+# Camera:
+c = Camera(position=Point(-100, 100, 0), target=Point(0, 0, 0), screen_distance=50, fov_angle=90,
+           resolution_height=450, resolution_width=600)
+
+# Ambiente:
+env = Environment(objects=objects_list, lights=lights_list, color=White, background_color=White)
+
+SUPERFICE1 = {"camera": c, "env" : env}
+
+# ---------------------------------------------------------------------------------------------------------- #
+# -- Superfice 2 ------------------------------------------------------------------------------------------- #
+# Materiais:
+ambient_coef = 0.04
+obj_difusion = 5
+obj_difusion = 0.55
+obj_specular = 0.1
+obj_roughness = 2
+
+obj_material = Material(color=Red, ambient=ambient_coef, difusion=obj_difusion, specular=obj_specular, roughness=obj_roughness)
+
+# Objetos
+curves = [Curve([Point(-1, 10, 0), Point(0, 10, 0), Point(1, 10, 0)], 5),
+          Curve([Point(-1, 5, -1), Point(0, 5, 0), Point(1, 5, 1)], 5),
+          Curve([Point(1, 0, 0), Point(0, 0, 0), Point(-1, 0, 0)], 5),
+          Curve([Point(1, -5, -1), Point(0, -5, 0), Point(-1, -5, 1)], 5),
+          Curve([Point(1, -10, 0), Point(0, -10, 0), Point(-1, -10, 0)], 5)]
+obj = Surface(obj_material, curves, 25)
+objects_list = [obj]
+
+# Transformações:
+obj.scale(Vector(45, 45, 45))
+obj.rotate(45, 2)
+obj.rotate(-45, 1)
+
+# Luz:
+l1 = Light(color=White, position=Point(-1000, 0, 0))
+l2 = Light(color=White, position=Point(0, 0, 1000))
+l3 = Light(color=White, position=Point(0, 0, -1000))
+lights_list = [l1 ,l2, l3]
+
+# Camera:
+c = Camera(position=Point(-600, 0, 0), target=Point(0, 0, 0), screen_distance=50, fov_angle=90,
+           resolution_height=450, resolution_width=600)
+
+# Ambiente:
+env = Environment(objects=objects_list, lights=lights_list, color=White, background_color=White)
+
+SUPERFICE2 = {"camera": c, "env" : env}
 
 # ---------------------------------------------------------------------------------------------------------- #
